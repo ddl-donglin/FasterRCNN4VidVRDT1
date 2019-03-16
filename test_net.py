@@ -9,6 +9,7 @@ import pickle
 import pprint
 import sys
 import time
+import _init_paths
 
 import cv2
 import numpy as np

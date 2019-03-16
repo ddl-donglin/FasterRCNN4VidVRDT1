@@ -5,6 +5,9 @@ This project is based on [faster-rcnn.pytorch](https://github.com/jwyang/faster-
 
 Modified some parts to be the 1st step of Video VRD project.
 
+## Benchmarking
+[Benchmarking](https://github.com/jwyang/faster-rcnn.pytorch)
+
 ## Prepare
 ```bash
 source activate pytorch
@@ -15,7 +18,7 @@ bash make.sh    # mayb u need 2 modify 'CUDA_ARCH' 2 suit u gpu version
 
 ```
 ## Train
-### VOC 2007
+#### VOC 2007
 Download pretrained models:
 
 [vgg16](https://drive.google.com/open?id=1Jg2G8LM3NMSZJovioVIynqDKrEBhVGsR)
@@ -30,7 +33,7 @@ bash gpu_vgg16.sh
 
 ```
 
-### Vidor_10k
+#### Vidor_10k
 Download [Grand Challenge dataset](http://lms.comp.nus.edu.sg/research/dataset.html)
 
 ```bash
@@ -42,7 +45,7 @@ Check u own proj structure with [tree.txt](tree.txt) 2 modify
 
 
 ## Test
-### VOC 2007
+#### VOC 2007
 Evaluate the detection performance of a pre-trained vgg16 model on pascal_voc test set
 
 ```bash
@@ -50,7 +53,7 @@ bash gpu_test.sh
 ```
 
 ## Demo
-### VOC 2007
+#### VOC 2007
 If you want to run detection on your own images with a pre-trained model, download the pretrained model listed in above tables or train your own models at first, then add images to folder $ROOT/images, and then run
 ```bash
 bash gpu_demo.sh

@@ -7,6 +7,7 @@ import os
 import pdb
 import pprint
 import time
+import _init_paths
 
 import numpy as np
 import torch

@@ -164,9 +164,9 @@ if __name__ == '__main__':
         args.imdb_name = "vg_150-50-50_minitrain"
         args.imdbval_name = "vg_150-50-50_minival"
         args.set_cfgs = ['ANCHOR_SCALES', '[4, 8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '50']
-    elif args.dataset == "vidor_10k":
-        args.imdb_name = "vidor_10k_trainval_full"
-        args.imdbval_name = "vidor_10k_test_full"
+    elif args.dataset == "vidor":
+        args.imdb_name = "vidor_trainval_full"
+        args.imdbval_name = "vidor_test_full"
         args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
 
     args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)

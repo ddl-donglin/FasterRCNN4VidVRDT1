@@ -6,6 +6,7 @@ from __future__ import print_function
 import os
 import pickle
 
+import _init_paths
 import PIL
 import datasets
 import numpy as np
@@ -15,11 +16,11 @@ from model.utils.config import cfg
 
 def prepare_roidb(imdb):
     """Enrich the imdb's roidb by adding some derived quantities that
-  are useful for training. This function precomputes the maximum
-  overlap, taken over ground-truth boxes, between each ROI and
-  each ground-truth box. The class with maximum overlap is also
-  recorded.
-  """
+    are useful for training. This function precomputes the maximum
+    overlap, taken over ground-truth boxes, between each ROI and
+    each ground-truth box. The class with maximum overlap is also
+    recorded.
+    """
 
     roidb = imdb.roidb
     if not (imdb.name.startswith('coco')):

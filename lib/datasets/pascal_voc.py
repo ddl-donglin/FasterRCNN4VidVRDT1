@@ -217,7 +217,7 @@ class pascal_voc(imdb):
             y2 = float(bbox.find('ymax').text) - 1
 
             diffc = obj.find('difficult')
-            difficult = 0 if diffc == None else int(diffc.text)
+            difficult = 0 if diffc is None else int(diffc.text)
             ishards[ix] = difficult
 
             cls = self._class_to_ind[obj.find('name').text.lower().strip()]

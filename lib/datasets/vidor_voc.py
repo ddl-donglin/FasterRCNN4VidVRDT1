@@ -22,7 +22,7 @@ vidor_classes_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/lib/datasets/
 
 class vidor_voc(imdb):
     def __init__(self, image_set, year, devkit_path=None):
-        imdb.__init__(self, 'voc_' + year + '_' + image_set)
+        imdb.__init__(self, 'vidor_' + year + '_' + image_set)
         self._year = year
         self._image_set = image_set + '_full'
         self._devkit_path = self._get_default_path() if devkit_path is None \

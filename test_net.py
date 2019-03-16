@@ -28,8 +28,8 @@ from torch.autograd import Variable
 
 def parse_args():
     """
-  Parse input arguments
-  """
+    Parse input arguments
+    """
     parser = argparse.ArgumentParser(description='Train a Fast R-CNN network')
     parser.add_argument('--dataset', dest='dataset',
                         help='training dataset',
@@ -38,13 +38,13 @@ def parse_args():
                         help='optional config file',
                         default='cfgs/vgg16.yml', type=str)
     parser.add_argument('--net', dest='net',
-                        help='vgg16, res50, res101, res152',
+                        help='vgg16, res101',
                         default='res101', type=str)
     parser.add_argument('--set', dest='set_cfgs',
                         help='set config keys', default=None,
                         nargs=argparse.REMAINDER)
     parser.add_argument('--load_dir', dest='load_dir',
-                        help='directory to load models', default="models",
+                        help='directory to load models', default="data/output",
                         type=str)
     parser.add_argument('--cuda', dest='cuda',
                         help='whether use CUDA',
@@ -73,8 +73,8 @@ def parse_args():
     parser.add_argument('--vis', dest='vis',
                         help='visualization mode',
                         action='store_true')
-    args = parser.parse_args()
-    return args
+
+    return parser.parse_args()
 
 
 lr = cfg.TRAIN.LEARNING_RATE

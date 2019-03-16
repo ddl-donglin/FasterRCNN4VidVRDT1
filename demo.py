@@ -9,6 +9,7 @@ import pprint
 import sys
 import time
 
+import _init_paths
 import cv2
 import numpy as np
 import torch
@@ -43,7 +44,7 @@ def parse_args():
                         nargs=argparse.REMAINDER)
     parser.add_argument('--load_dir', dest='load_dir',
                         help='directory to load models',
-                        default="/srv/share/jyang375/models")
+                        default="data/output")
     parser.add_argument('--image_dir', dest='image_dir',
                         help='directory to load images for demo',
                         default="images")
@@ -171,7 +172,7 @@ if __name__ == '__main__':
 
     fasterRCNN.create_architecture()
 
-    print("load checkpoint %s" % (load_name))
+    print("load checkpoint %s" % load_name)
     if args.cuda > 0:
         checkpoint = torch.load(load_name)
     else:
@@ -184,7 +185,7 @@ if __name__ == '__main__':
 
     # pdb.set_trace()
 
-    print("load checkpoint %s" % (load_name))
+    print("load checkpoint %s" % load_name)
 
     # initilize the tensor holder here.
     im_data = torch.FloatTensor(1)
@@ -230,7 +231,7 @@ if __name__ == '__main__':
 
     print('Loaded Photo: {} images.'.format(num_images))
 
-    while (num_images >= 0):
+    while num_images >= 0:
         total_tic = time.time()
         if webcam_num == -1:
             num_images -= 1

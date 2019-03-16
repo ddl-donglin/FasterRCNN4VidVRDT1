@@ -17,6 +17,8 @@ from . import ds_utils
 from .imdb import imdb
 from .voc_eval import voc_eval
 
+vidor_classes_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/lib/datasets/vidor_classes.json'
+
 
 class vidor_voc(imdb):
     def __init__(self, image_set, year, devkit_path=None):
@@ -26,7 +28,7 @@ class vidor_voc(imdb):
         self._devkit_path = self._get_default_path() if devkit_path is None \
             else devkit_path
         self._data_path = os.path.join(self._devkit_path, 'VOC' + self._year)
-        with open('lib/dataset/vidor_classes.json', 'r') as classes_f:
+        with open(vidor_classes_path, 'r') as classes_f:
             self._classes = ('__background__',) + tuple(json.load(classes_f)['classes'])
         self._class_to_ind = dict(zip(self.classes, range(self.num_classes)))
         self._image_ext = '.jpg'

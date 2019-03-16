@@ -24,7 +24,7 @@ class vidor_voc(imdb):
     def __init__(self, image_set, year, devkit_path=None):
         imdb.__init__(self, 'voc_' + year + '_' + image_set)
         self._year = year
-        self._image_set = image_set
+        self._image_set = image_set + '_full'
         self._devkit_path = self._get_default_path() if devkit_path is None \
             else devkit_path
         self._data_path = os.path.join(self._devkit_path, 'VOC' + self._year)

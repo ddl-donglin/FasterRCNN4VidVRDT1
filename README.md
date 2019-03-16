@@ -1,5 +1,10 @@
 # Faster-RCNN Pytorch
 
+## Authorship
+This project is based on [faster-rcnn.pytorch](https://github.com/jwyang/faster-rcnn.pytorch)
+
+Modified some parts to be the 1st step of Video VRD project.
+
 ## Prepare
 ```bash
 source activate pytorch
@@ -34,3 +39,29 @@ Download [Grand Challenge dataset](http://lms.comp.nus.edu.sg/research/dataset.h
 
 ### Modify
 Check u own proj structure with [tree.txt](tree.txt) 2 modify
+
+
+## Test
+### VOC 2007
+Evaluate the detection performance of a pre-trained vgg16 model on pascal_voc test set
+
+```bash
+bash gpu_test.sh
+```
+
+## Demo
+### VOC 2007
+If you want to run detection on your own images with a pre-trained model, download the pretrained model listed in above tables or train your own models at first, then add images to folder $ROOT/images, and then run
+```bash
+bash gpu_demo.sh
+```
+
+## Webcam
+You can use a webcam in a real-time demo by running
+```bash
+python demo.py --net vgg16 \
+               --checksession $SESSION --checkepoch $EPOCH --checkpoint $CHECKPOINT \
+               --cuda --load_dir path/to/model/directoy \
+               --webcam $WEBCAM_ID
+```
+The demo is stopped by clicking the image window and then pressing the 'q' key.

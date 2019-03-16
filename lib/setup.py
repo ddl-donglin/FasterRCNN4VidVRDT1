@@ -1,10 +1,4 @@
 from __future__ import print_function
-# --------------------------------------------------------
-# Fast R-CNN
-# Copyright (c) 2015 Microsoft
-# Licensed under The MIT License [see LICENSE for details]
-# Written by Ross Girshick
-# --------------------------------------------------------
 
 import os
 from os.path import join as pjoin

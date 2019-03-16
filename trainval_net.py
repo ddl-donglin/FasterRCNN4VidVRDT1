@@ -1,43 +1,31 @@
-# --------------------------------------------------------
-# Pytorch multi-GPU Faster R-CNN
-# Licensed under The MIT License [see LICENSE for details]
-# Written by Jiasen Lu, Jianwei Yang, based on code from Ross Girshick
-# --------------------------------------------------------
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import _init_paths
-import os
-import sys
-import numpy as np
 import argparse
-import pprint
+import os
 import pdb
+import pprint
 import time
 
+import numpy as np
 import torch
-from torch.autograd import Variable
 import torch.nn as nn
 import torch.optim as optim
-
-import torchvision.transforms as transforms
-from torch.utils.data.sampler import Sampler
-
-from roi_data_layer.roidb import combined_roidb
-from roi_data_layer.roibatchLoader import roibatchLoader
-from model.utils.config import cfg, cfg_from_file, cfg_from_list, get_output_dir
-from model.utils.net_utils import weights_normal_init, save_net, load_net, \
-    adjust_learning_rate, save_checkpoint, clip_gradient
-
-from model.faster_rcnn.vgg16 import vgg16
 from model.faster_rcnn.resnet import resnet
+from model.faster_rcnn.vgg16 import vgg16
+from model.utils.config import cfg, cfg_from_file, cfg_from_list
+from model.utils.net_utils import adjust_learning_rate, save_checkpoint, clip_gradient
+from roi_data_layer.roibatchLoader import roibatchLoader
+from roi_data_layer.roidb import combined_roidb
+from torch.autograd import Variable
+from torch.utils.data.sampler import Sampler
 
 
 def parse_args():
     """
-  Parse input arguments
-  """
+    Parse input arguments
+    """
     parser = argparse.ArgumentParser(description='Train a Fast R-CNN network')
     parser.add_argument('--dataset', dest='dataset',
                         help='training dataset',
@@ -59,7 +47,7 @@ def parse_args():
                         default=10000, type=int)
 
     parser.add_argument('--save_dir', dest='save_dir',
-                        help='directory to save models', default="models",
+                        help='directory to save models', default="data/output",
                         type=str)
     parser.add_argument('--nw', dest='num_workers',
                         help='number of workers to load data',
@@ -117,8 +105,7 @@ def parse_args():
                         help='whether use tensorboard',
                         action='store_true')
 
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
 
 
 class sampler(Sampler):
@@ -205,7 +192,7 @@ if __name__ == '__main__':
 
     print('{:d} roidb entries'.format(len(roidb)))
 
-    output_dir = args.save_dir + "/" + args.net + "/" + args.dataset
+    output_dir = os.path.join(args.save_dir, args.net, args.dataset)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 

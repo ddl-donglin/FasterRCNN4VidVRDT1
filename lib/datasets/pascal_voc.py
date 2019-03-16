@@ -7,32 +7,14 @@ import subprocess
 import uuid
 import xml.etree.ElementTree as ET
 
-# import PIL
 import numpy as np
 import scipy.io as sio
 import scipy.sparse
-# TODO: make fast_rcnn irrelevant
-# >>>> obsolete, because it depends on sth outside of this project
 from model.utils.config import cfg
 
 from . import ds_utils
 from .imdb import imdb
 from .voc_eval import voc_eval
-
-# --------------------------------------------------------
-# Fast R-CNN
-# Copyright (c) 2015 Microsoft
-# Licensed under The MIT License [see LICENSE for details]
-# Written by Ross Girshick
-# --------------------------------------------------------
-
-try:
-    xrange  # Python 2
-except NameError:
-    xrange = range  # Python 3
-
-
-# <<<< obsolete
 
 
 class pascal_voc(imdb):
@@ -190,7 +172,7 @@ class pascal_voc(imdb):
         raw_data = sio.loadmat(filename)['boxes'].ravel()
 
         box_list = []
-        for i in xrange(raw_data.shape[0]):
+        for i in range(raw_data.shape[0]):
             boxes = raw_data[i][:, (1, 0, 3, 2)] - 1
             keep = ds_utils.unique_boxes(boxes)
             boxes = boxes[keep, :]
@@ -219,11 +201,11 @@ class pascal_voc(imdb):
         num_objs = len(objs)
 
         boxes = np.zeros((num_objs, 4), dtype=np.uint16)
-        gt_classes = np.zeros((num_objs), dtype=np.int32)
+        gt_classes = np.zeros(num_objs, dtype=np.int32)
         overlaps = np.zeros((num_objs, self.num_classes), dtype=np.float32)
         # "Seg" area for pascal is just the box area
-        seg_areas = np.zeros((num_objs), dtype=np.float32)
-        ishards = np.zeros((num_objs), dtype=np.int32)
+        seg_areas = np.zeros(num_objs, dtype=np.float32)
+        ishards = np.zeros(num_objs, dtype=np.int32)
 
         # Load object bounding boxes into a data frame.
         for ix, obj in enumerate(objs):
@@ -279,7 +261,7 @@ class pascal_voc(imdb):
                     if dets == []:
                         continue
                     # the VOCdevkit expects 1-based indices
-                    for k in xrange(dets.shape[0]):
+                    for k in range(dets.shape[0]):
                         f.write('{:s} {:.3f} {:.1f} {:.1f} {:.1f} {:.1f}\n'.
                                 format(index, dets[k, -1],
                                        dets[k, 0] + 1, dets[k, 1] + 1,

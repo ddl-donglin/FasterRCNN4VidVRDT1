@@ -219,7 +219,8 @@ class vidor_voc(imdb):
             difficult = 0 if diffc is None else int(diffc.text)
             ishards[ix] = difficult
 
-            cls = self._class_to_ind[obj.find('name').text.lower().strip().replace(" ", "_")]
+            obj_name = obj.find('name').text.lower().strip().replace(" ", "_").split('/')[0]
+            cls = self._class_to_ind[obj_name]
             boxes[ix, :] = [x1, y1, x2, y2]
             gt_classes[ix] = cls
             overlaps[ix, cls] = 1.0

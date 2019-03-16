@@ -219,7 +219,7 @@ class vidor_voc(imdb):
             difficult = 0 if diffc is None else int(diffc.text)
             ishards[ix] = difficult
 
-            cls = self._class_to_ind[obj.find('name').text.lower().strip()]
+            cls = self._class_to_ind[obj.find('name').text.lower().strip().replace(" ", "_")]
             boxes[ix, :] = [x1, y1, x2, y2]
             gt_classes[ix] = cls
             overlaps[ix, cls] = 1.0
@@ -257,7 +257,7 @@ class vidor_voc(imdb):
             with open(filename, 'wt') as f:
                 for im_ind, index in enumerate(self.image_index):
                     dets = all_boxes[cls_ind][im_ind]
-                    if dets == []:
+                    if not dets:
                         continue
                     # the VOCdevkit expects 1-based indices
                     for k in range(dets.shape[0]):

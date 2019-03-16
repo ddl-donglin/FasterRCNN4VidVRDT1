@@ -1,5 +1,24 @@
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import print_function
+
+import os
+import pickle
+import subprocess
+import uuid
+import xml.etree.ElementTree as ET
+
+# import PIL
+import numpy as np
+import scipy.io as sio
+import scipy.sparse
+# TODO: make fast_rcnn irrelevant
+# >>>> obsolete, because it depends on sth outside of this project
+from model.utils.config import cfg
+
+from . import ds_utils
+from .imdb import imdb
+from .voc_eval import voc_eval
+
 # --------------------------------------------------------
 # Fast R-CNN
 # Copyright (c) 2015 Microsoft
@@ -7,32 +26,11 @@ from __future__ import absolute_import
 # Written by Ross Girshick
 # --------------------------------------------------------
 
-import xml.dom.minidom as minidom
-
-import os
-# import PIL
-import numpy as np
-import scipy.sparse
-import subprocess
-import math
-import glob
-import uuid
-import scipy.io as sio
-import xml.etree.ElementTree as ET
-import pickle
-from .imdb import imdb
-from .imdb import ROOT_DIR
-from . import ds_utils
-from .voc_eval import voc_eval
-
-# TODO: make fast_rcnn irrelevant
-# >>>> obsolete, because it depends on sth outside of this project
-from model.utils.config import cfg
-
 try:
-    xrange          # Python 2
+    xrange  # Python 2
 except NameError:
     xrange = range  # Python 3
+
 
 # <<<< obsolete
 
@@ -371,6 +369,6 @@ class pascal_voc(imdb):
 if __name__ == '__main__':
     d = pascal_voc('trainval', '2007')
     res = d.roidb
-    from IPython import embed;
+    from IPython import embed
 
     embed()

@@ -7,7 +7,7 @@ LEARNING_RATE=0.01
 SAVE_DIR='data/output'
 
 CUDA_VISIBLE_DEVICES=$GPU_ID python trainval_net.py \
-                   --dataset pascal_voc --net vgg16 \
+                   --dataset pascal_voc --net res101 \
                    --bs $BATCH_SIZE --nw $WORKER_NUMBER \
                    --lr $LEARNING_RATE \
                    --save_dir $SAVE_DIR \

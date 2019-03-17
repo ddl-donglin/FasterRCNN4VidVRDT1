@@ -50,8 +50,8 @@ def get_minibatch(roidb, num_classes):
 
 def _get_image_blob(roidb, scale_inds):
     """Builds an input blob from the images in the roidb at the specified
-  scales.
-  """
+    scales.
+    """
     num_images = len(roidb)
 
     processed_ims = []

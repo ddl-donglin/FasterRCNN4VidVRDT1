@@ -27,9 +27,7 @@ Download pretrained models:
 
 ```bash
 bash prepare_voc2007.sh
-bash gpu_res101.sh
-# or
-bash gpu_vgg16.sh
+bash gpu_train.sh pascal_voc resnet101
 
 ```
 

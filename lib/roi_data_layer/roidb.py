@@ -103,8 +103,8 @@ def filter_roidb(roidb):
 
 def combined_roidb(imdb_names, training=True):
     """
-  Combine multiple roidbs
-  """
+    Combine multiple roidbs
+    """
 
     def get_training_roidb(imdb):
         """Returns a roidb (Region of Interest database) for use in training."""

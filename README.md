@@ -1,9 +1,20 @@
 # Faster-RCNN Pytorch
 
+## Overview
+
+This repo is the 1st task of VidVRD: Video Object Detection.
+
+The 2nd stage trunk project: [Video Relation Prediction](https://github.com/Daviddddl/I3D_pytorch.git)
+
+[The Grand Challenge MM2019](http://lms.comp.nus.edu.sg/research/dataset.html) 
+
 ## Authorship
+
 This project is based on [faster-rcnn.pytorch](https://github.com/jwyang/faster-rcnn.pytorch)
 
 Modified some parts to be the 1st step of Video VRD project.
+
+[FasterRCNN_Tutorial](http://www.telesens.co/2018/03/11/object-detection-and-classification-using-r-cnns/)
 
 ## Benchmarking
 [Benchmarking](https://github.com/jwyang/faster-rcnn.pytorch)

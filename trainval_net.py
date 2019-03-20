@@ -232,8 +232,9 @@ if __name__ == '__main__':
     elif args.net == 'res101':
         fasterRCNN = resnet(imdb.classes, 101, pretrained=True, class_agnostic=args.class_agnostic)
     else:
-        print("network is not defined")
-        pdb.set_trace()
+        print("network is not defined, use default: resnet101.")
+        fasterRCNN = resnet(imdb.classes, 101, pretrained=True, class_agnostic=args.class_agnostic)
+        # pdb.set_trace()
 
     fasterRCNN.create_architecture()
 
@@ -256,6 +257,8 @@ if __name__ == '__main__':
         optimizer = torch.optim.Adam(params)
 
     elif args.optimizer == "sgd":
+        optimizer = torch.optim.SGD(params, momentum=cfg.TRAIN.MOMENTUM)
+    else:
         optimizer = torch.optim.SGD(params, momentum=cfg.TRAIN.MOMENTUM)
 
     if args.cuda:

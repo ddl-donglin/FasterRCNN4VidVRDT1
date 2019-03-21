@@ -241,17 +241,17 @@ class vidor_voc(imdb):
                 print(wrong_anno_alert)
 
             # compare img bound and bbox
-            if 1. > x1:
+            if 0. > x1:
                 wrong_anno_alert = '{}-{}-{} is wrong! x1:{}, x2:{}, y1:{}, y2:{}, fw:{}, fh:{}\n' \
                     .format(folder, filename, track_id, x1, x2, y1, y2, frame_width, frame_height)
-                x1 = max(1., x1)
+                x1 = max(0., x1)
                 fault_anno_flag = True
                 print(wrong_anno_alert)
 
-            if 1. > y1:
+            if 0. > y1:
                 wrong_anno_alert = '{}-{}-{} is wrong! x1:{}, x2:{}, y1:{}, y2:{}, fw:{}, fh:{}\n' \
                     .format(folder, filename, track_id, x1, x2, y1, y2, frame_width, frame_height)
-                y1 = max(1., y1)
+                y1 = max(0., y1)
                 fault_anno_flag = True
                 print(wrong_anno_alert)
 

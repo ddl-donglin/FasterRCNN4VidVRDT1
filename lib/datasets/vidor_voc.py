@@ -18,7 +18,7 @@ from .imdb import imdb
 from .voc_eval import voc_eval
 
 vidor_classes_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/lib/datasets/vidor_classes.json'
-wrong_anno_save_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/data/Vidor_10k/VOC2019/Annotations/wrong_anno.txt'
+wrong_anno_save_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/data/Vidor_wrong_anno.txt'
 
 
 class vidor_voc(imdb):

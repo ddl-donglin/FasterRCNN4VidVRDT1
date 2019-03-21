@@ -18,6 +18,7 @@ from .imdb import imdb
 from .voc_eval import voc_eval
 
 vidor_classes_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/lib/datasets/vidor_classes.json'
+wrong_anno_save_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/data/Vidor_10k/VOC2019/Annotations/wrong_anno.txt'
 
 
 class vidor_voc(imdb):
@@ -220,16 +221,42 @@ class vidor_voc(imdb):
             x2 = float(bbox.find('xmax').text)
             y2 = float(bbox.find('ymax').text)
 
+            fault_anno_flag = False
+
             if x1 > x2:
                 x1, x2 = x2, x1
+                fault_anno_flag = True
             if y1 > y2:
                 y1, y2 = y2, y1
+                fault_anno_flag = True
 
             # compare img bound and bbox
-            x1 = max(1., x1)
-            y1 = max(1., y1)
-            x2 = min(frame_width, x2)
-            y2 = min(frame_height, y2)
+            if 1. > x1:
+                x1 = max(1., x1)
+                fault_anno_flag = True
+            if 1. > y1:
+                y1 = max(1., y1)
+                fault_anno_flag = True
+            if frame_width < x2:
+                x2 = min(frame_width, x2)
+                fault_anno_flag = True
+            if frame_height < y2:
+                y2 = min(frame_height, y2)
+                fault_anno_flag = True
+
+            if fault_anno_flag:
+                # save this fault anno
+                folder = tree.find('folder').text
+                filename = tree.find('filename').text
+                track_id = obj.find('trackid').text
+                wrong_anno_alert = '{}-{}-{} is wrong!\n'.format(folder, filename, track_id)
+                print(wrong_anno_alert)
+                if os.path.exists(wrong_anno_save_path):
+                    with open(wrong_anno_save_path, 'w') as wrong_anno_f:
+                        wrong_anno_f.write(wrong_anno_alert)
+                else:
+                    with open(wrong_anno_save_path, 'w+') as wrong_anno_f:
+                        wrong_anno_f.write(wrong_anno_alert)
 
             diffc = obj.find('difficult')
             difficult = 0 if diffc is None else int(diffc.text)

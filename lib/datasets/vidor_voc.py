@@ -183,7 +183,7 @@ class vidor_voc(imdb):
 
     def _load_vidor_annotation(self, index):
         """
-        Load image and bounding boxes info from XML file in the PASCAL VOC
+        Load image and bounding boxes info from XML file in the VIDOR VOC
         format.
         """
         filename = os.path.join(self._data_path, 'Annotations', index + '.xml')
@@ -199,6 +199,11 @@ class vidor_voc(imdb):
         #     objs = non_diff_objs
         num_objs = len(objs)
 
+        frame = tree.find('size')
+        frame_width = float(frame.find('width').text)
+        frame_height = float(frame.find('height').text)
+        frame_depth = float(frame.find('depth').text)
+
         boxes = np.zeros((num_objs, 4), dtype=np.uint16)
         gt_classes = np.zeros(num_objs, dtype=np.int32)
         overlaps = np.zeros((num_objs, self.num_classes), dtype=np.float32)
@@ -210,10 +215,21 @@ class vidor_voc(imdb):
         for ix, obj in enumerate(objs):
             bbox = obj.find('bndbox')
             # Make pixel indexes 0-based
-            x1 = float(bbox.find('xmin').text) - 1
-            y1 = float(bbox.find('ymin').text) - 1
-            x2 = float(bbox.find('xmax').text) - 1
-            y2 = float(bbox.find('ymax').text) - 1
+            x1 = float(bbox.find('xmin').text)
+            y1 = float(bbox.find('ymin').text)
+            x2 = float(bbox.find('xmax').text)
+            y2 = float(bbox.find('ymax').text)
+
+            if x1 > x2:
+                x1, x2 = x2, x1
+            if y1 > y2:
+                y1, y2 = y2, y1
+
+            # compare img bound and bbox
+            x1 = max(1., x1)
+            y1 = max(1., y1)
+            x2 = min(frame_width, x2)
+            y2 = min(frame_height, y2)
 
             diffc = obj.find('difficult')
             difficult = 0 if diffc is None else int(diffc.text)

@@ -36,7 +36,7 @@ def parse_args():
                         default='pascal_voc', type=str)
     parser.add_argument('--cfg', dest='cfg_file',
                         help='optional config file',
-                        default='cfgs/vgg16.yml', type=str)
+                        default='cfgs/res101.yml', type=str)
     parser.add_argument('--net', dest='net',
                         help='vgg16, res101',
                         default='res101', type=str)
@@ -112,6 +112,10 @@ if __name__ == '__main__':
         args.imdb_name = "vg_150-50-50_minitrain"
         args.imdbval_name = "vg_150-50-50_minival"
         args.set_cfgs = ['ANCHOR_SCALES', '[4, 8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]']
+    elif args.dataset == "vidor":
+        args.imdb_name = "vidor_2019_trainval"
+        args.imdbval_name = "vidor_2019_test"
+        args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]', 'MAX_NUM_GT_BOXES', '20']
 
     args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
 
@@ -150,7 +154,7 @@ if __name__ == '__main__':
 
     fasterRCNN.create_architecture()
 
-    print("load checkpoint %s" % (load_name))
+    print("load checkpoint %s" % load_name)
     checkpoint = torch.load(load_name)
     fasterRCNN.load_state_dict(checkpoint['model'])
     if 'pooling_mode' in checkpoint.keys():

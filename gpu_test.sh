@@ -8,4 +8,4 @@ CHECKPOINT=$5
 
 python test_net.py --dataset ${DATASET} --net ${NETWORK} \
                    --checksession ${SESSION} --checkepoch ${EPOCH} --checkpoint ${CHECKPOINT} \
-                   --cuda
+                   --cuda --mGPUs

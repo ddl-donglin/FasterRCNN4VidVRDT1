@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
 
 GPU_ID=1
 BATCH_SIZE=8

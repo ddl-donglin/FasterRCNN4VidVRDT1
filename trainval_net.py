@@ -278,8 +278,8 @@ if __name__ == '__main__':
             cfg.POOLING_MODE = checkpoint['pooling_mode']
         print("loaded checkpoint %s" % load_name)
 
-    # if args.mGPUs:
-    fasterRCNN = nn.DataParallel(fasterRCNN)
+    if args.mGPUs:
+        fasterRCNN = nn.DataParallel(fasterRCNN)
 
     iters_per_epoch = int(train_size / args.batch_size)
 

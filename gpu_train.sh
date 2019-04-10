@@ -7,6 +7,9 @@ LEARNING_RATE=0.01
 SAVE_DIR='data/output'
 DATASET=$1
 NETWORK=$2
+CHECK_SESSION=$3
+CHECK_EPOCH=$4
+CHECK_POINT=$5
 
 
 # vidor, pascal_voc
@@ -20,4 +23,9 @@ CUDA_VISIBLE_DEVICES=$GPU_ID python trainval_net.py \
                    --bs $BATCH_SIZE --nw $WORKER_NUMBER \
                    --lr $LEARNING_RATE \
                    --save_dir $SAVE_DIR \
+                   --r True \
+                   --checksession ${CHECK_SESSION}\
+                   --checkepoch ${CHECK_EPOCH}\
+                   --checkpoint ${CHECK_POINT}\
+                   --mGPUs \
                    --cuda

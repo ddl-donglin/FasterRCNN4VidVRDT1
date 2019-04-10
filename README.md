@@ -41,6 +41,8 @@ bash prepare_voc2007.sh
 bash gpu_train.sh pascal_voc resnet101
 
 ```
+The model will be saved in ``/storage/``
+
 
 #### Vidor_10k
 Download [Grand Challenge dataset](http://lms.comp.nus.edu.sg/research/dataset.html)

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-GPU_ID=1
 BATCH_SIZE=8
 WORKER_NUMBER=0
 LEARNING_RATE=0.01
@@ -18,7 +17,7 @@ echo ${DATASET}
 # vgg16, res101
 echo ${NETWORK}
 
-CUDA_VISIBLE_DEVICES=$GPU_ID python trainval_net.py \
+python trainval_net.py \
                    --dataset ${DATASET} --net ${NETWORK} \
                    --bs $BATCH_SIZE --nw $WORKER_NUMBER \
                    --lr $LEARNING_RATE \

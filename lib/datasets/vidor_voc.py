@@ -321,7 +321,7 @@ class vidor_voc(imdb):
             with open(filename, 'wt') as f:
                 for im_ind, index in enumerate(self.image_index):
                     dets = all_boxes[cls_ind][im_ind]
-                    if not dets:
+                    if dets.size == 0:
                         continue
                     # the VOCdevkit expects 1-based indices
                     for k in range(dets.shape[0]):

@@ -322,7 +322,7 @@ class vidor_voc(imdb):
                 for im_ind, index in enumerate(self.image_index):
                     dets = all_boxes[cls_ind][im_ind]
                     try:
-                        if not dets:
+                        if dets == []:
                             continue
                         # the VOCdevkit expects 1-based indices
                         for k in range(dets.shape[0]):

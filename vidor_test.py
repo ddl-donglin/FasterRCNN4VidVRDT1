@@ -33,7 +33,7 @@ imdb.competition_mode(on=True)
 output_dir = get_output_dir(imdb, save_name)
 
 with open(det_file, 'rb') as f:
-    all_boxes = pickle.loads(f, pickle.HIGHEST_PROTOCOL)
+    all_boxes = pickle.load(f, pickle.HIGHEST_PROTOCOL)
 
 print('Evaluating detections')
 imdb.evaluate_detections(all_boxes, output_dir)

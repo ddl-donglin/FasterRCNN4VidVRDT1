@@ -13,8 +13,7 @@ def parse_rec(filename):
     tree = ET.parse(filename)
     objects = []
     for obj in tree.findall('object'):
-        obj_struct = {'name': obj.find('name').text, 'pose': obj.find('pose').text,
-                      'truncated': int(obj.find('truncated').text), 'difficult': int(obj.find('difficult').text)}
+        obj_struct = {'name': obj.find('name').text}
         bbox = obj.find('bndbox')
         obj_struct['bbox'] = [int(bbox.find('xmin').text),
                               int(bbox.find('ymin').text),
@@ -27,10 +26,10 @@ def parse_rec(filename):
 
 def voc_ap(rec, prec, use_07_metric=False):
     """ ap = voc_ap(rec, prec, [use_07_metric])
-  Compute VOC AP given precision and recall.
-  If use_07_metric is true, uses the
-  VOC 07 11 point method (default:False).
-  """
+    Compute VOC AP given precision and recall.
+    If use_07_metric is true, uses the
+    VOC 07 11 point method (default:False).
+    """
     if use_07_metric:
         # 11 point metric
         ap = 0.

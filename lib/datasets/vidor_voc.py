@@ -321,17 +321,14 @@ class vidor_voc(imdb):
             with open(filename, 'wt') as f:
                 for im_ind, index in enumerate(self.image_index):
                     dets = all_boxes[cls_ind][im_ind]
-                    try:
-                        if dets == []:
-                            continue
-                        # the VOCdevkit expects 1-based indices
-                        for k in range(dets.shape[0]):
-                            f.write('{:s} {:.3f} {:.1f} {:.1f} {:.1f} {:.1f}\n'.
-                                    format(index, dets[k, -1],
-                                           dets[k, 0] + 1, dets[k, 1] + 1,
-                                           dets[k, 2] + 1, dets[k, 3] + 1))
-                    except:
-                        print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-', dets, '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-')
+                    if dets == []:
+                        continue
+                    # the VOCdevkit expects 1-based indices
+                    for k in range(dets.shape[0]):
+                        f.write('{:s} {:.3f} {:.1f} {:.1f} {:.1f} {:.1f}\n'.
+                                format(index, dets[k, -1],
+                                       dets[k, 0] + 1, dets[k, 1] + 1,
+                                       dets[k, 2] + 1, dets[k, 3] + 1))
 
     def _do_python_eval(self, output_dir='output'):
         annopath = os.path.join(

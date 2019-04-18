@@ -130,11 +130,11 @@ def voc_eval(detpath,
     for imagename in imagenames:
         R = [obj for obj in recs[imagename] if obj['name'] == classname]
         bbox = np.array([x['bbox'] for x in R])
-        difficult = np.array([x['difficult'] for x in R]).astype(np.bool)
+        # difficult = np.array([x['difficult'] for x in R]).astype(np.bool)
         det = [False] * len(R)
-        npos = npos + sum(~difficult)
+        # npos = npos + sum(~difficult)
         class_recs[imagename] = {'bbox': bbox,
-                                 'difficult': difficult,
+                                 # 'difficult': difficult,
                                  'det': det}
 
     # read dets
@@ -186,12 +186,12 @@ def voc_eval(detpath,
                 jmax = np.argmax(overlaps)
 
             if ovmax > ovthresh:
-                if not R['difficult'][jmax]:
-                    if not R['det'][jmax]:
-                        tp[d] = 1.
-                        R['det'][jmax] = 1
-                    else:
-                        fp[d] = 1.
+                # if not R['difficult'][jmax]:
+                if not R['det'][jmax]:
+                    tp[d] = 1.
+                    R['det'][jmax] = 1
+                else:
+                    fp[d] = 1.
             else:
                 fp[d] = 1.
 

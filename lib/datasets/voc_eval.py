@@ -94,16 +94,18 @@ def voc_eval(detpath,
     # Buz of permission problem, we need 2 modify saving path
     my_cache_dir = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/data/cache/'
     # first load gt
-    if not os.path.isdir(cachedir):
-        os.mkdir(cachedir)
-    cachefile = os.path.join(cachedir, '%s_annots.pkl' % imagesetfile)
+    # if not os.path.isdir(cachedir):
+    #     os.mkdir(cachedir)
+    if not os.path.isdir(my_cache_dir):
+        os.mkdir(my_cache_dir)
+    # cachefile = os.path.join(cachedir, '%s_annots.pkl' % imagesetfile)
     my_cache_file = os.path.join(my_cache_dir, '%s_annots.pkl' % imagesetfile)
     # read list of images
     with open(imagesetfile, 'r') as f:
         lines = f.readlines()
     imagenames = [x.strip() for x in lines]
 
-    if not os.path.isfile(cachefile):
+    if not os.path.isfile(my_cache_file):
         # load annotations
         recs = {}
         for imagename in tqdm(imagenames):

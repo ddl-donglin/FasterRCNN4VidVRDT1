@@ -99,8 +99,8 @@ def voc_eval(detpath,
     if not os.path.isdir(my_cache_dir):
         os.mkdir(my_cache_dir)
     # cachefile = os.path.join(cachedir, '%s_annots.pkl' % imagesetfile)
-    my_cache_file = os.path.join(my_cache_dir, 'test_full_annots.pkl')
-    print("----"*10, my_cache_file, "----"*10)
+    my_cache_file = os.path.join(my_cache_dir, 'test_full_' + classname + '_annots.pkl')
+    # print("----"*10, my_cache_file, "----"*10)
     # read list of images
     with open(imagesetfile, 'r') as f:
         lines = f.readlines()
@@ -117,7 +117,7 @@ def voc_eval(detpath,
             #         i + 1, len(imagenames)))
         # save
         print('Saving cached annotations to {:s}'.format(my_cache_file))
-        with open(my_cache_file, 'wb') as f:
+        with open(my_cache_file, 'wb+') as f:
             pickle.dump(recs, f)
     else:
         # load

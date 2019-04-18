@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 import os
 import pickle
 import numpy as np
+from tqdm import tqdm
 
 
 def parse_rec(filename):
@@ -90,6 +91,8 @@ def voc_eval(detpath,
     # assumes imagesetfile is a text file with each line an image name
     # cachedir caches the annotations in a pickle file
 
+    # Buz of permission problem, we need 2 modify saving path
+    my_cache_dir = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/data/cache/'
     # first load gt
     if not os.path.isdir(cachedir):
         os.mkdir(cachedir)
@@ -102,12 +105,14 @@ def voc_eval(detpath,
     if not os.path.isfile(cachefile):
         # load annotations
         recs = {}
-        for i, imagename in enumerate(imagenames):
+        for imagename in tqdm(imagenames):
             recs[imagename] = parse_rec(annopath.format(imagename))
-            if i % 100 == 0:
-                print('Reading annotation for {:d}/{:d}'.format(
-                    i + 1, len(imagenames)))
+
+            # if i % 100 == 0:
+            #     print('Reading annotation for {:d}/{:d}'.format(
+            #         i + 1, len(imagenames)))
         # save
+        cachefile = os.path.join(my_cache_dir, '%s_annots.pkl' % imagesetfile)
         print('Saving cached annotations to {:s}'.format(cachefile))
         with open(cachefile, 'wb') as f:
             pickle.dump(recs, f)

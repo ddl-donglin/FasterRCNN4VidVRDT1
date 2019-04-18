@@ -91,7 +91,7 @@ def voc_eval(detpath,
     # assumes imagesetfile is a text file with each line an image name
     # cachedir caches the annotations in a pickle file
 
-    # Buz of permission problem, we need 2 modify saving path
+    # Bcuz of permission problem, we need 2 modify saving path
     my_cache_dir = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/data/cache/'
     # first load gt
     # if not os.path.isdir(cachedir):
@@ -100,6 +100,7 @@ def voc_eval(detpath,
         os.mkdir(my_cache_dir)
     # cachefile = os.path.join(cachedir, '%s_annots.pkl' % imagesetfile)
     my_cache_file = os.path.join(my_cache_dir, '%s_annots.pkl' % imagesetfile)
+    print("----"*10, my_cache_file, "----"*10)
     # read list of images
     with open(imagesetfile, 'r') as f:
         lines = f.readlines()

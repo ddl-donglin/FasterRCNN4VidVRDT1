@@ -99,7 +99,7 @@ def voc_eval(detpath,
     if not os.path.isdir(my_cache_dir):
         os.mkdir(my_cache_dir)
     # cachefile = os.path.join(cachedir, '%s_annots.pkl' % imagesetfile)
-    my_cache_file = os.path.join(my_cache_dir, '%s_annots.pkl' % imagesetfile)
+    my_cache_file = os.path.join(my_cache_dir, 'test_full_annots.pkl')
     print("----"*10, my_cache_file, "----"*10)
     # read list of images
     with open(imagesetfile, 'r') as f:

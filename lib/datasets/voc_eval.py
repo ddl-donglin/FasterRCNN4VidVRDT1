@@ -73,19 +73,19 @@ def voc_eval(detpath,
                               [ovthresh],
                               [use_07_metric])
 
-  Top level function that does the PASCAL VOC evaluation.
+    Top level function that does the PASCAL VOC evaluation.
 
-  detpath: Path to detections
+    detpath: Path to detections
       detpath.format(classname) should produce the detection results file.
-  annopath: Path to annotations
+    annopath: Path to annotations
       annopath.format(imagename) should be the xml annotations file.
-  imagesetfile: Text file containing the list of images, one image per line.
-  classname: Category name (duh)
-  cachedir: Directory for caching the annotations
-  [ovthresh]: Overlap threshold (default = 0.5)
-  [use_07_metric]: Whether to use VOC07's 11 point AP computation
+    imagesetfile: Text file containing the list of images, one image per line.
+    classname: Category name (duh)
+    cachedir: Directory for caching the annotations
+    [ovthresh]: Overlap threshold (default = 0.5)
+    [use_07_metric]: Whether to use VOC07's 11 point AP computation
       (default False)
-  """
+    """
     # assumes detections are in detpath.format(classname)
     # assumes annotations are in annopath.format(imagename)
     # assumes imagesetfile is a text file with each line an image name
@@ -100,7 +100,6 @@ def voc_eval(detpath,
         os.mkdir(my_cache_dir)
     # cachefile = os.path.join(cachedir, '%s_annots.pkl' % imagesetfile)
     my_cache_file = os.path.join(my_cache_dir, 'test_full_annots.pkl')
-    # print("----"*10, my_cache_file, "----"*10)
     # read list of images
     with open(imagesetfile, 'r') as f:
         lines = f.readlines()
@@ -111,10 +110,6 @@ def voc_eval(detpath,
         recs = {}
         for imagename in tqdm(imagenames):
             recs[imagename] = parse_rec(annopath.format(imagename))
-
-            # if i % 100 == 0:
-            #     print('Reading annotation for {:d}/{:d}'.format(
-            #         i + 1, len(imagenames)))
         # save
         print('Saving cached annotations to {:s}'.format(my_cache_file))
         with open(my_cache_file, 'wb+') as f:
@@ -122,10 +117,7 @@ def voc_eval(detpath,
     else:
         # load
         with open(my_cache_file, 'rb') as f:
-            try:
-                recs = pickle.load(f)
-            except:
-                recs = pickle.load(f, encoding='bytes')
+            recs = pickle.load(f)
 
     # extract gt objects for this class
     class_recs = {}

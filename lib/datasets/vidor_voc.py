@@ -17,8 +17,17 @@ from . import ds_utils
 from .imdb import imdb
 from .voc_eval import voc_eval
 
-vidor_classes_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/lib/datasets/vidor_classes.json'
-wrong_anno_save_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/data/Vidor_wrong_anno.txt'
+gpu_root_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/'
+local_root_path = '/home/daivd/PycharmProjects/FasterRCNN4VidVRDT1'
+root_path = gpu_root_path
+
+vidor_classes_path = os.path.join(root_path, 'lib/datasets/vidor_classes.json')
+wrong_anno_save_path = os.path.join(root_path, 'data/Vidor_wrong_anno.txt')
+
+
+def get_vidor_classes(classes_path=vidor_classes_path):
+    with open(classes_path, 'r') as classes_f:
+        return ('__background__',) + tuple(json.load(classes_f)['classes'])
 
 
 class vidor_voc(imdb):
@@ -29,8 +38,7 @@ class vidor_voc(imdb):
         self._devkit_path = self._get_default_path() if devkit_path is None \
             else devkit_path
         self._data_path = os.path.join(self._devkit_path, 'VOC' + self._year)
-        with open(vidor_classes_path, 'r') as classes_f:
-            self._classes = ('__background__',) + tuple(json.load(classes_f)['classes'])
+        self._classes = get_vidor_classes()
         self._class_to_ind = dict(zip(self.classes, range(self.num_classes)))
         self._image_ext = '.jpg'
         self._image_index = self._load_image_set_index()
@@ -413,8 +421,9 @@ class vidor_voc(imdb):
 
 
 if __name__ == '__main__':
-    d = vidor_voc('trainval', '2007')
-    res = d.roidb
-    from IPython import embed
-
-    embed()
+    # d = vidor_voc('trainval', '2007')
+    # res = d.roidb
+    # from IPython import embed
+    #
+    # embed()
+    print(get_vidor_classes())

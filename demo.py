@@ -23,6 +23,7 @@ from model.utils.config import cfg, cfg_from_file, cfg_from_list
 from model.utils.net_utils import vis_detections
 from scipy.misc import imread
 from torch.autograd import Variable
+from lib.datasets.vidor_voc import get_vidor_classes
 
 
 def parse_args():
@@ -156,6 +157,8 @@ if __name__ == '__main__':
                                  'cow', 'diningtable', 'dog', 'horse',
                                  'motorbike', 'person', 'pottedplant',
                                  'sheep', 'sofa', 'train', 'tvmonitor'])
+
+    vidor_classes = get_vidor_classes()
 
     # initilize the network here.
     if args.net == 'vgg16':

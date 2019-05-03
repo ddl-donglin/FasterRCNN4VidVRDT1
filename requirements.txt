@@ -8,3 +8,4 @@ easydict
 matplotlib
 pyyaml
 tensorboardX
+easydict

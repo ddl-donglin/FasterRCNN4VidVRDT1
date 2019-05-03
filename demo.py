@@ -158,17 +158,19 @@ if __name__ == '__main__':
                                  'motorbike', 'person', 'pottedplant',
                                  'sheep', 'sofa', 'train', 'tvmonitor'])
 
-    vidor_classes = get_vidor_classes()
+    vidor_classes = np.asarray(list(get_vidor_classes()))
 
     # initilize the network here.
+    dataset_classes = vidor_classes
+
     if args.net == 'vgg16':
-        fasterRCNN = vgg16(pascal_classes, pretrained=False, class_agnostic=args.class_agnostic)
+        fasterRCNN = vgg16(dataset_classes, pretrained=False, class_agnostic=args.class_agnostic)
     elif args.net == 'res101':
-        fasterRCNN = resnet(pascal_classes, 101, pretrained=False, class_agnostic=args.class_agnostic)
+        fasterRCNN = resnet(dataset_classes, 101, pretrained=False, class_agnostic=args.class_agnostic)
     elif args.net == 'res50':
-        fasterRCNN = resnet(pascal_classes, 50, pretrained=False, class_agnostic=args.class_agnostic)
+        fasterRCNN = resnet(dataset_classes, 50, pretrained=False, class_agnostic=args.class_agnostic)
     elif args.net == 'res152':
-        fasterRCNN = resnet(pascal_classes, 152, pretrained=False, class_agnostic=args.class_agnostic)
+        fasterRCNN = resnet(dataset_classes, 152, pretrained=False, class_agnostic=args.class_agnostic)
     else:
         print("network is not defined")
         pdb.set_trace()

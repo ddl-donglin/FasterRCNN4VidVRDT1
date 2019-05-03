@@ -116,6 +116,10 @@ if __name__ == '__main__':
         args.imdb_name = "vidor_2019_trainval"
         args.imdbval_name = "vidor_2019_test"
         args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]']
+    elif args.dataset == "vidor_train":
+        args.imdb_name = "vidor_2019_trainval"
+        args.imdbval_name = "vidor_2019_trainval"
+        args.set_cfgs = ['ANCHOR_SCALES', '[8, 16, 32]', 'ANCHOR_RATIOS', '[0.5,1,2]']
 
     args.cfg_file = "cfgs/{}_ls.yml".format(args.net) if args.large_scale else "cfgs/{}.yml".format(args.net)
 
@@ -202,8 +206,7 @@ if __name__ == '__main__':
                  for _ in range(imdb.num_classes)]
 
     output_dir = get_output_dir(imdb, save_name)
-    dataset = roibatchLoader(roidb, ratio_list, ratio_index, 1, \
-                             imdb.num_classes, training=False, normalize=False)
+    dataset = roibatchLoader(roidb, ratio_list, ratio_index, 1, imdb.num_classes, training=False, normalize=False)
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=1,
                                              shuffle=False, num_workers=0,
                                              pin_memory=True)

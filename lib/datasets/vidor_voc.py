@@ -11,11 +11,11 @@ import xml.etree.ElementTree as ET
 import numpy as np
 import scipy.io as sio
 import scipy.sparse
-from model.utils.config import cfg
+from lib.model.utils.config import cfg
 
-from . import ds_utils
-from .imdb import imdb
-from .voc_eval import voc_eval
+from lib.datasets import ds_utils
+from lib.datasets.imdb import imdb
+from lib.datasets.voc_eval import voc_eval
 
 gpu_root_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/'
 local_root_path = '/home/daivd/PycharmProjects/FasterRCNN4VidVRDT1'

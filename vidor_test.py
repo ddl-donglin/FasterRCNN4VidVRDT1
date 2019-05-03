@@ -28,7 +28,7 @@ from torch.autograd import Variable
 
 det_file = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/output/res101/vidor_2019_test/faster_rcnn_10/detections.pkl'
 save_name = 'faster_rcnn_10'
-imdb, roidb, ratio_list, ratio_index = combined_roidb('vidor_2019_test', False)
+imdb, roidb, ratio_list, ratio_index = combined_roidb('vidor_2019_train', False)
 imdb.competition_mode(on=True)
 output_dir = get_output_dir(imdb, save_name)
 

@@ -2,7 +2,8 @@ import cv2
 import os
 from tqdm import tqdm
 
-detect_res_root_path = '/home/daivd/PycharmProjects/FasterRCNN4VidVRDT1/data/output/Main'
+detect_res_root_path = '/Users/davidddl/nextGPUs/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/data/Vidor_10k/results' \
+                       '/VOC2019/Main '
 
 
 def draw_bbox_on_imgs(img_path, class_name, score, bboxes):
@@ -36,6 +37,7 @@ def show_det_res(detect_res_file, score_threshold=0.6, test_total_num=50):
 
 
 if __name__ == '__main__':
+
     test_class = 'ball'
     test_file = 'comp4_det_test_full_{}.txt'.format(test_class)
     print('Visualization 4: ', test_file)

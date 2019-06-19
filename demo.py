@@ -342,7 +342,7 @@ if __name__ == '__main__':
                 cls_dets = cls_dets[keep.view(-1).long()]
                 if vis:
                     im2show = vis_detections(im2show, dataset_classes[j], cls_dets.cpu().numpy(), 0.5)
-                if args.output_bbox is not None:
+                if args.out_bbox is not None:
                     with open(os.path.join(args.image_dir, imglist[num_images][:-4] + '_det.txt'), 'w+') as out_f:
                         out_f.write(str(dataset_classes[j] + ': ' + cls_dets.cpu().numpy() + '\n'))
 

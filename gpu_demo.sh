@@ -28,5 +28,3 @@ python demo.py --net ${NET} \
                --dataset ${DATASET} \
                --image_dir ${IMAGE_DIR} \
                --load_dir ${MODEL_PATH}
-
-# rm -rf ./imageCache/*

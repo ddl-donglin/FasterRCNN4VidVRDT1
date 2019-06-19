@@ -21,7 +21,7 @@ from model.rpn.bbox_transform import clip_boxes
 from model.utils.blob import im_list_to_blob
 from model.utils.config import cfg, cfg_from_file, cfg_from_list
 from model.utils.net_utils import vis_detections
-from scipy.misc import imread
+from scipy.misc.imageio import imread
 from torch.autograd import Variable
 from lib.datasets.vidor_voc import get_vidor_classes
 
@@ -151,12 +151,12 @@ if __name__ == '__main__':
     load_name = os.path.join(input_dir,
                              'faster_rcnn_{}_{}_{}.pth'.format(args.checksession, args.checkepoch, args.checkpoint))
 
-    pascal_classes = np.asarray(['__background__',
-                                 'aeroplane', 'bicycle', 'bird', 'boat',
-                                 'bottle', 'bus', 'car', 'cat', 'chair',
-                                 'cow', 'diningtable', 'dog', 'horse',
-                                 'motorbike', 'person', 'pottedplant',
-                                 'sheep', 'sofa', 'train', 'tvmonitor'])
+    # pascal_classes = np.asarray(['__background__',
+    #                              'aeroplane', 'bicycle', 'bird', 'boat',
+    #                              'bottle', 'bus', 'car', 'cat', 'chair',
+    #                              'cow', 'diningtable', 'dog', 'horse',
+    #                              'motorbike', 'person', 'pottedplant',
+    #                              'sheep', 'sofa', 'train', 'tvmonitor'])
 
     vidor_classes = np.asarray(list(get_vidor_classes()))
 
@@ -304,7 +304,7 @@ if __name__ == '__main__':
                     else:
                         box_deltas = box_deltas.view(-1, 4) * torch.FloatTensor(cfg.TRAIN.BBOX_NORMALIZE_STDS) \
                                      + torch.FloatTensor(cfg.TRAIN.BBOX_NORMALIZE_MEANS)
-                    box_deltas = box_deltas.view(1, -1, 4 * len(pascal_classes))
+                    box_deltas = box_deltas.view(1, -1, 4 * len(dataset_classes))
 
             pred_boxes = bbox_transform_inv(boxes, box_deltas, 1)
             pred_boxes = clip_boxes(pred_boxes, im_info.data, 1)
@@ -322,7 +322,7 @@ if __name__ == '__main__':
         misc_tic = time.time()
         if vis:
             im2show = np.copy(im)
-        for j in range(1, len(pascal_classes)):
+        for j in range(1, len(dataset_classes)):
             inds = torch.nonzero(scores[:, j] > thresh).view(-1)
             # if there is det
             if inds.numel() > 0:
@@ -339,7 +339,7 @@ if __name__ == '__main__':
                 keep = nms(cls_dets, cfg.TEST.NMS, force_cpu=not cfg.USE_GPU_NMS)
                 cls_dets = cls_dets[keep.view(-1).long()]
                 if vis:
-                    im2show = vis_detections(im2show, pascal_classes[j], cls_dets.cpu().numpy(), 0.5)
+                    im2show = vis_detections(im2show, dataset_classes[j], cls_dets.cpu().numpy(), 0.5)
 
         misc_toc = time.time()
         nms_time = misc_toc - misc_tic

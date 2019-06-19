@@ -9,3 +9,4 @@ matplotlib
 pyyaml
 tensorboardX
 easydict
+imageio

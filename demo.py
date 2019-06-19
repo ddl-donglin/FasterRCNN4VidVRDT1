@@ -21,7 +21,7 @@ from model.rpn.bbox_transform import clip_boxes
 from model.utils.blob import im_list_to_blob
 from model.utils.config import cfg, cfg_from_file, cfg_from_list
 from model.utils.net_utils import vis_detections
-from scipy.misc.imageio import imread
+from imageio import imread
 from torch.autograd import Variable
 from lib.datasets.vidor_voc import get_vidor_classes
 

@@ -8,6 +8,7 @@ CHECKPOINT=283995
 IMAGE_DIR=$1
 DATASET='vidor'
 MODEL_PATH='/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/data/output'
+OUTPUT_BBOX='/storage/dldi/PyProjects/vidor/img_test/imageCache'
 
 ffmpeg_path='/storage/dldi/PyProjects/ffmpeg-3.3.4/bin-linux/ffmpeg'
 
@@ -25,6 +26,7 @@ IMAGE_DIR=${test_img_path}
 python demo.py --net ${NET} \
                --checksession ${SESSION} --checkepoch ${EPOCH} --checkpoint ${CHECKPOINT} \
                --cuda \
+               --out_bbox ${OUTPUT_BBOX} \
                --dataset ${DATASET} \
                --image_dir ${IMAGE_DIR} \
                --load_dir ${MODEL_PATH}

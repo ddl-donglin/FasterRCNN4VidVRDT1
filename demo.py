@@ -76,6 +76,8 @@ def parse_args():
     parser.add_argument('--vis', dest='vis',
                         help='visualization mode',
                         action='store_true')
+    parser.add_argument('--out_bbox', dest='out_bbox',
+                        default=None, type=str)
     parser.add_argument('--webcam_num', dest='webcam_num',
                         help='webcam ID number',
                         default=-1, type=int)
@@ -340,6 +342,9 @@ if __name__ == '__main__':
                 cls_dets = cls_dets[keep.view(-1).long()]
                 if vis:
                     im2show = vis_detections(im2show, dataset_classes[j], cls_dets.cpu().numpy(), 0.5)
+                if args.output_bbox is not None:
+                    with open(os.path.join(args.image_dir, imglist[num_images][:-4] + '_det.txt'), 'w+') as out_f:
+                        out_f.write(str(dataset_classes[j] + ': ' + cls_dets.cpu().numpy() + '\n'))
 
         misc_toc = time.time()
         nms_time = misc_toc - misc_tic

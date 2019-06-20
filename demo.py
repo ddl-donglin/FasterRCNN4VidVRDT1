@@ -322,8 +322,10 @@ if __name__ == '__main__':
         det_toc = time.time()
         detect_time = det_toc - det_tic
         misc_tic = time.time()
+
         if vis:
             im2show = np.copy(im)
+        label_bboxes = []
         for j in range(1, len(dataset_classes)):
             inds = torch.nonzero(scores[:, j] > thresh).view(-1)
             # if there is det
@@ -342,9 +344,10 @@ if __name__ == '__main__':
                 cls_dets = cls_dets[keep.view(-1).long()]
                 if vis:
                     im2show = vis_detections(im2show, dataset_classes[j], cls_dets.cpu().numpy(), 0.5)
+                label_bboxes.append(str(dataset_classes[j]) + " --- " + str(cls_dets.cpu().numpy()))
         if args.out_bbox is not None:
             with open(os.path.join(args.image_dir, imglist[num_images][:-4] + '_det.txt'), 'w+') as out_f:
-                out_f.write(str(rois_label) + '---' + str(scores) + '---' + str(boxes) + '\n')
+                out_f.write(str(label_bboxes))
 
         misc_toc = time.time()
         nms_time = misc_toc - misc_tic

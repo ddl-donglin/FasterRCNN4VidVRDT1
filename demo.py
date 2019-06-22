@@ -348,8 +348,8 @@ if __name__ == '__main__':
                 label_bboxes.append(vis_detections_bbox(dataset_classes[j], cls_dets.cpu().numpy(), 0.5))
 
         if args.out_bbox is not None:
-            with open(os.path.join(args.image_dir, imglist[num_images][:-4] + '_det.json'), 'w+') as out_f:
-                out_f.write(json.dumps(label_bboxes))
+            with open(os.path.join(args.image_dir, imglist[num_images][:-4] + '_det.txt'), 'w+') as out_f:
+                out_f.write(str(label_bboxes))
 
         misc_toc = time.time()
         nms_time = misc_toc - misc_tic

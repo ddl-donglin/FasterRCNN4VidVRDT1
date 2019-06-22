@@ -8,6 +8,7 @@ import pdb
 import pprint
 import sys
 import time
+import json
 
 import _init_paths
 import cv2
@@ -20,7 +21,7 @@ from model.rpn.bbox_transform import bbox_transform_inv
 from model.rpn.bbox_transform import clip_boxes
 from model.utils.blob import im_list_to_blob
 from model.utils.config import cfg, cfg_from_file, cfg_from_list
-from model.utils.net_utils import vis_detections
+from model.utils.net_utils import vis_detections, vis_detections_bbox
 from imageio import imread
 from torch.autograd import Variable
 from lib.datasets.vidor_voc import get_vidor_classes
@@ -344,10 +345,11 @@ if __name__ == '__main__':
                 cls_dets = cls_dets[keep.view(-1).long()]
                 if vis:
                     im2show = vis_detections(im2show, dataset_classes[j], cls_dets.cpu().numpy(), 0.5)
-                label_bboxes.append(str(dataset_classes[j]) + " --- " + str(cls_dets.cpu().numpy()))
+                label_bboxes.append(vis_detections_bbox(dataset_classes[j], cls_dets.cpu().numpy(), 0.5))
+
         if args.out_bbox is not None:
-            with open(os.path.join(args.image_dir, imglist[num_images][:-4] + '_det.txt'), 'w+') as out_f:
-                out_f.write(str(label_bboxes))
+            with open(os.path.join(args.image_dir, imglist[num_images][:-4] + '_det.json'), 'w+') as out_f:
+                out_f.write(json.dumps(label_bboxes))
 
         misc_toc = time.time()
         nms_time = misc_toc - misc_tic

@@ -12,7 +12,7 @@ gpu_ffmpeg_path = '/storage/dldi/PyProjects/ffmpeg-3.3.4/bin-linux/ffmpeg'
 local_ffmpeg_path = '/home/daivd/PycharmProjects/ffmpeg-3.3.4/bin-linux/ffmpeg'
 local_project_base_path = '/home/daivd/PycharmProjects/FasterRCNN4VidVRDT1/'
 
-env = 'local'
+env = 'gpu'
 
 if env == 'gpu':
     project_base_path = gpu_project_base_path

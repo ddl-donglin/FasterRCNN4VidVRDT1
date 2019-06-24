@@ -345,7 +345,10 @@ if __name__ == '__main__':
                 cls_dets = cls_dets[keep.view(-1).long()]
                 if vis:
                     im2show = vis_detections(im2show, dataset_classes[j], cls_dets.cpu().numpy(), 0.5)
-                label_bboxes.append(vis_detections_bbox(dataset_classes[j], cls_dets.cpu().numpy(), 0.5))
+
+                cls_box = vis_detections_bbox(dataset_classes[j], cls_dets.cpu().numpy(), 0.5)
+                if len(cls_box) > 0:
+                    label_bboxes.append(cls_box)
 
         if args.out_bbox is not None:
             with open(os.path.join(args.image_dir, imglist[num_images][:-4] + '_det.txt'), 'w+') as out_f:

@@ -73,7 +73,7 @@ def vis_detections_bbox(class_name, dets, thresh=0.8):
         if score > thresh:
             cls_bbox.append({
                 "bbox": bbox,
-                "score": score
+                "score": score.item()
             })
     return class_name, cls_bbox
 

@@ -66,22 +66,16 @@ def vis_detections(im, class_name, dets, thresh=0.8):
 
 
 def vis_detections_bbox(class_name, dets, thresh=0.8):
-    cls_bbox = dict()
+    cls_bbox = list()
     for i in range(np.minimum(10, dets.shape[0])):
         bbox = list(int(np.round(x)) for x in dets[i, :4])
         score = dets[i, -1]
         if score > thresh:
-            if class_name in cls_bbox.keys():
-                cls_bbox[class_name].append({
-                    "bbox": bbox,
-                    "score": score
-                })
-            else:
-                cls_bbox[class_name] = [{
-                    "bbox": bbox,
-                    "score": score
-                }]
-    return cls_bbox
+            cls_bbox.append({
+                "bbox": bbox,
+                "score": score
+            })
+    return class_name, cls_bbox
 
 
 def adjust_learning_rate(optimizer, decay=0.1):

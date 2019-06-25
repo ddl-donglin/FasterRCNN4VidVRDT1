@@ -326,7 +326,7 @@ if __name__ == '__main__':
 
         if vis:
             im2show = np.copy(im)
-        label_bboxes = []
+        label_bboxes = dict()
         for j in range(1, len(dataset_classes)):
             inds = torch.nonzero(scores[:, j] > thresh).view(-1)
             # if there is det
@@ -346,9 +346,9 @@ if __name__ == '__main__':
                 if vis:
                     im2show = vis_detections(im2show, dataset_classes[j], cls_dets.cpu().numpy(), 0.5)
 
-                cls_box = vis_detections_bbox(dataset_classes[j], cls_dets.cpu().numpy(), 0.5)
+                class_name, cls_box = vis_detections_bbox(dataset_classes[j], cls_dets.cpu().numpy(), 0.5)
                 if len(cls_box) > 0:
-                    label_bboxes.append(cls_box)
+                    label_bboxes[class_name] = cls_box
 
         if args.out_bbox is not None:
             with open(os.path.join(args.image_dir, imglist[num_images][:-4] + '_det.json'), 'w+') as out_f:

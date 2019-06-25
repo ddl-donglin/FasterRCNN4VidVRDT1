@@ -31,7 +31,8 @@ def extract_all_frames(video_path, out_path=None):
         try:
             os.makedirs(extract_frame_path)
         except OSError:
-            pass
+            print("The {} exists! Skipping!".format(extract_frame_path))
+            return extract_frame_path
     else:
         if not os.path.exists(out_path):
             os.makedirs(out_path)
@@ -126,17 +127,17 @@ def visualize_track():
 
 
 if __name__ == '__main__':
-    # test_vid_path = '/storage/dldi/PyProjects/vidor/img_test/6980260459.mp4'
-    # extract_frame_path = extract_all_frames(test_vid_path)
-    # print('---' * 20)
-    # print('extract frames finish!', extract_frame_path)
-    # anchor_frames_path = get_anchor_frames(extract_frame_path)
-    # print('===' * 20)
-    # print('get_anchor frames finish!', anchor_frames_path)
-    # anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
-    # print('--==' * 20)
-    # print('get_anchor_frames_det finish!', anchor_frames_det_path)
+    test_vid_path = '/storage/dldi/PyProjects/vidor/img_test/6980260459.mp4'
+    extract_frame_path = extract_all_frames(test_vid_path)
+    print('---' * 20)
+    print('extract frames finish!', extract_frame_path)
+    anchor_frames_path = get_anchor_frames(extract_frame_path)
+    print('===' * 20)
+    print('get_anchor frames finish!', anchor_frames_path)
+    anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
+    print('--==' * 20)
+    print('get_anchor_frames_det finish!', anchor_frames_det_path)
 
-    with open('framesCache/6980260459/anchors/0010_det.txt', 'r') as in_f:
-        dets = in_f.readlines()
-    print(dets)
+    # with open('framesCache/6980260459/anchors/0010_det.json', 'r') as in_f:
+    #     dets = in_f.readlines()
+    # print(dets)

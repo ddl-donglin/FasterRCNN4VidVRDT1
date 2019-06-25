@@ -10,3 +10,4 @@ pyyaml
 tensorboardX
 easydict
 imageio
+opencv-contrib-python

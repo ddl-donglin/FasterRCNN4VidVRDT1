@@ -68,7 +68,7 @@ def vis_detections(im, class_name, dets, thresh=0.8):
 def vis_detections_bbox(class_name, dets, thresh=0.8):
     cls_bbox = list()
     for i in range(np.minimum(10, dets.shape[0])):
-        bbox = tuple(int(np.round(x)) for x in dets[i, :4])
+        bbox = list(int(np.round(x)) for x in dets[i, :4])
         score = dets[i, -1]
         if score > thresh:
             cls_bbox.append({

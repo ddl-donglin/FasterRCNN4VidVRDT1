@@ -67,21 +67,43 @@ def get_anchor_dets(anchor_frames_path):
     return anchor_frames_path
 
 
-def track_frames(frames_path, anchor_frames_path):
-    anchor_names = list()
-    anchors = list()
+def track_frames(frames_path, anchor_frames_path=None):
+    if anchor_frames_path is None:
+        anchor_frames_path = os.path.join(frames_path, 'anchors')
+    anchor_names = ['0001']
+    anchor_bboxes = list()
     for root, dirs, files in os.walk(anchor_frames_path):
-        for each_anchor in tqdm(files):
-            anchor_name = os.path.basename(each_anchor)
-            anchor_names.append(anchor_name)
-            anchors.append(cv2.imread(os.path.join(root, anchor_name)))
-            with open(os.path.join(root, anchor_name[:-4] + '_det.json'), 'r') as in_f:
-                anchor_bbox_json = json.load(in_f)
+        for each_anchor_file in files:
+            anchor_name = os.path.basename(each_anchor_file)
+            if anchor_name.endswith('_det.json'):
+                anchor_names.append(anchor_name[:4])
+                with open(os.path.join(root, anchor_name), 'r') as in_f:
+                    anchor_bbox_json = json.load(in_f)
+                    anchor_bboxes.append(anchor_bbox_json)
 
+    frame_names = list()
+    for root, dirs, files in os.walk(frames_path):
+        for each_frame_file in files:
+            frame_names.append(os.path.basename(each_frame_file)[:4])
+    frame_names = sorted(frame_names)
+    anchor_names = sorted(anchor_names)
 
-            for root, dirs, files in os.walk(frames_path):
-                for each_frame in files:
-                    frame_name = os.path.basename(each_frame)
+    for i, each_anchor in enumerate(anchor_names):
+        anchor_frames = list()
+
+        # for root, dirs, files in os.walk(frames_path):
+        #     for each_frame in files:
+        #         frame_name = os.path.basename(each_frame)
+        #         # print(int(anchor_names[i][:4]), int(frame_name[:4]), int(anchor_names[i + 1][:4]))
+        #         if int(anchor_names[i][:4]) <= int(frame_name[:4]) < int(anchor_names[i + 1][:4]):
+        #             anchor_frames.append(cv2.imread(os.path.join(root, frame_name)))
+        #
+        # print(anchor_frames)
+        # for class_name, bboxes in anchor_bboxes[i].items():
+        #     for init_bbox in bboxes:
+        #         track_bboxes = tracker(anchor_frames, tuple(init_bbox['bbox']))
+        #         print(track_bboxes)
+        #         exit(0)
 
 
 def tracker(frames, init_bbox, tracker_type='KCF'):
@@ -128,17 +150,15 @@ def visualize_track():
 
 
 if __name__ == '__main__':
-    test_vid_path = '/storage/dldi/PyProjects/vidor/img_test/6980260459.mp4'
-    extract_frame_path = extract_all_frames(test_vid_path)
-    print('---' * 20)
-    print('extract frames finish!', extract_frame_path)
-    anchor_frames_path = get_anchor_frames(extract_frame_path)
-    print('===' * 20)
-    print('get_anchor frames finish!', anchor_frames_path)
-    anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
-    print('--==' * 20)
-    print('get_anchor_frames_det finish!', anchor_frames_det_path)
+    # test_vid_path = '/storage/dldi/PyProjects/vidor/img_test/6980260459.mp4'
+    # extract_frame_path = extract_all_frames(test_vid_path)
+    # print('---' * 20)
+    # print('extract frames finish!', extract_frame_path)
+    # anchor_frames_path = get_anchor_frames(extract_frame_path)
+    # print('===' * 20)
+    # print('get_anchor frames finish!', anchor_frames_path)
+    # anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
+    # print('--==' * 20)
+    # print('get_anchor_frames_det finish!', anchor_frames_det_path)
 
-    # with open('framesCache/6980260459/anchors/0010_det.json', 'r') as in_f:
-    #     dets = in_f.readlines()
-    # print(dets)
+    track_frames('framesCache/6980260459')

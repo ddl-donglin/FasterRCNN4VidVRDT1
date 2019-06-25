@@ -31,7 +31,7 @@ def extract_all_frames(video_path, out_path=None):
         try:
             os.makedirs(extract_frame_path)
         except OSError:
-            print("The {} exists! Skipping!".format(extract_frame_path))
+            print("The {} exists! Skip extracting frames!".format(extract_frame_path))
             return extract_frame_path
     else:
         if not os.path.exists(out_path):
@@ -47,7 +47,9 @@ def get_anchor_frames(frames_path, jump=10):
     anchor_frames_path = os.path.join(frames_path, 'anchors')
     if not os.path.exists(anchor_frames_path):
         os.makedirs(anchor_frames_path)
-
+    else:
+        print("The {} exists! Skip getting anchors!".format(anchor_frames_path))
+        return anchor_frames_path
     for root, dirs, files in os.walk(frames_path):
         for each_frame in files:
             frame_name = os.path.basename(each_frame)
@@ -57,7 +59,6 @@ def get_anchor_frames(frames_path, jump=10):
                                     os.path.join(anchor_frames_path, frame_name))
                 except:
                     pass
-
     return anchor_frames_path
 
 

@@ -52,7 +52,7 @@ def get_anchor_frames(frames_path, jump=5):
     anchor_num = 0
     for each_frame in get_current_files_without_sub_files(frames_path):
         frame_name = os.path.basename(each_frame)
-        if frame_name[:-4] == '.jpg':
+        if frame_name[-4:] == '.jpg':
             if int(frame_name[:4]) % jump == 0 or frame_name[:4] == '0001':
                 try:
                     shutil.copyfile(os.path.join(frames_path, frame_name),
@@ -243,7 +243,7 @@ if __name__ == '__main__':
     anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
     print('--==' * 20)
     print('get_anchor_frames_det finish!', anchor_frames_det_path)
-    obj_tracking_list, anchor_names = track_frames(extract_frame_path)
+    obj_tracking_list, anchor_names = track_frames(extract_frame_path, retrack=True, save_frames=True)
     print('===' * 20)
     print('track frames finish!')
     visualize_track(extract_frame_path)

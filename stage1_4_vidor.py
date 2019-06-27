@@ -12,16 +12,16 @@ if __name__ == '__main__':
                         help='if need vidor_support, set this 1', type=int, default=0, required=False)
     single_video = parser.add_argument_group(title='Single Video')
     single_video.add_argument('-vp', dest='video_path',
-                              help='path of video', type=str, required=True)
+                              help='path of video', type=str, required=False)
     single_video.add_argument('-aj', dest='anchor_jump',
                               help='frames num of anchor jump', default=5, type=int, required=False)
     single_video.add_argument('-vis', dest='visualize',
                               help='If u need visualzation, set this 1', default=0, type=int, required=False)
 
     vidor_support = parser.add_argument_group(title='Vidor Support')
-    vidor_support.add_argument('-bp', dest='base_path', help='base path of vidor', required=True, type=str)
-    vidor_support.add_argument('-sp', dest='split_dir_path', help='split_dir_path of videos', required=True, type=str)
-    vidor_support.add_argument('-vd', dest='video_dir', help='dir path of videos', required=True, type=str)
+    vidor_support.add_argument('-bp', dest='base_path', help='base path of vidor', required=False, type=str)
+    vidor_support.add_argument('-sp', dest='split_dir_path', help='split_dir_path of videos', required=False, type=str)
+    vidor_support.add_argument('-vd', dest='video_dir', help='dir path of videos', required=False, type=str)
     vidor_support.add_argument('-ajp', dest='anchor_jump_4_vidor',
                                help='frames num of anchor jump', default=5, type=int, required=False)
     args = parser.parse_args()

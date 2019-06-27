@@ -6,10 +6,10 @@ from get_tracklet_4_vid import extract_all_frames, get_anchor_frames, \
     get_anchor_dets, track_frames, visualize_track, get_current_files_without_sub_files
 
 
-def main(video_path, anchor_jump=5, visualize=False):
+def main(video_path, anchor_jump=5, visualize=False, out_frames_path=None):
     print('=' * 50)
     print('Now is getting video object tracking 4: ', video_path)
-    extract_frame_path = extract_all_frames(video_path)
+    extract_frame_path = extract_all_frames(video_path, out_path=out_frames_path)
     print('---' * 10)
     print('extract frames finish!', extract_frame_path)
     anchor_frames_path = get_anchor_frames(extract_frame_path, anchor_jump)
@@ -62,4 +62,5 @@ if __name__ == '__main__':
         for vid in tqdm(get_current_files_without_sub_files(vid_dir_path)):
             video_path = os.path.join(vid_dir_path, vid)
             anchor_jump = args.anchor_jump_4_vidor
-            main(video_path, anchor_jump)
+            out_frames_path = os.path.join(vid_dir_path, vid[:-4])
+            main(video_path, anchor_jump, out_frames_path=out_frames_path)

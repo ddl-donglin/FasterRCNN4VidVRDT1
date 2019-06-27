@@ -66,8 +66,8 @@ def get_anchor_frames(frames_path, jump=5):
 
 
 def get_anchor_dets(anchor_frames_path):
-    os.system('bash ' + project_base_path + 'gpu_demo.sh ' + anchor_frames_path
-              + ' > ' + os.path.join(anchor_frames_path, 'anchor_det.log 2>&1'))
+    os.system('bash ' + project_base_path + 'gpu_demo.sh ' + anchor_frames_path)
+    # + ' > ' + os.path.join(anchor_frames_path, 'anchor_det.log 2>&1'))
     return anchor_frames_path
 
 

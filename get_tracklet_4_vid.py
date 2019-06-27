@@ -80,12 +80,11 @@ def track_frames(frames_path, anchor_frames_path=None, video_id=None):
         anchor_frames_path = os.path.join(frames_path, 'anchors')
     anchor_names = list()
     anchor_bboxes = list()
-    for root, dirs, files in os.walk(anchor_frames_path):
-        for each_anchor_file in files:
+    for each_anchor_file in get_current_files_without_sub_files(anchor_frames_path):
             anchor_name = os.path.basename(each_anchor_file)
             if anchor_name.endswith('_det.json'):
                 anchor_names.append(anchor_name[:4])
-                with open(os.path.join(root, anchor_name), 'r') as in_f:
+                with open(os.path.join(anchor_frames_path, anchor_name), 'r') as in_f:
                     anchor_bbox_json = json.load(in_f)
                     anchor_bboxes.append(anchor_bbox_json)
 
@@ -174,47 +173,50 @@ def visualize_track(frames_path, obj_tracking_list, anchor_names=None):
         anchor_names = set()
         for each_file in get_current_files_without_sub_files(os.path.join(frames_path, 'anchors')):
             anchor_names.add(each_file[:4])
+    anchor_names = list(anchor_names)
 
-    for anchor_id in sorted(anchor_names):
-        anchor_tracks = list()
-        anchor_track_max = 0
-        for anchor_obj_track in obj_tracking_list:
-            if anchor_obj_track['start_frame'] == int(anchor_id):
-                anchor_tracks.append(anchor_obj_track)
-                len_of_track = len(anchor_obj_track['tracklet'])
-                if len_of_track > anchor_track_max:
-                    anchor_track_max = len_of_track
+    for i, anchor_id in enumerate(sorted(anchor_names)):
+        if i + 1 == len(anchor_names):
+            break
+        next_anchor_id = anchor_names[i + 1]
 
-        for i in range(anchor_track_max):
-            fid = str(int(anchor_id) + i).zfill(4)
+        segment_obj_tracks = list()
+        for each_obj_track in obj_tracking_list:
+            if each_obj_track['start_frame'] == int(anchor_id):
+                segment_obj_tracks.append(each_obj_track)
+
+        for j, fid in enumerate(range(int(anchor_id), int(next_anchor_id))):
+            print("Now is painting: ", fid)
             frame = cv2.imread(os.path.join(frames_path, str(fid).zfill(4) + '.jpg'))
-            for each_obj_track in anchor_tracks:
-                if i < len(each_obj_track['tracklet']):
+            for each_obj_track in segment_obj_tracks:
+                if j < len(each_obj_track['tracklet']):
                     obj_cls_label = each_obj_track['obj_cls']
                     score = each_obj_track['score']
-                    bbox = each_obj_track['tracklet'][i]
+                    bbox = each_obj_track['tracklet'][j]
                     p1 = (int(bbox[0]), int(bbox[1]))
                     p2 = (int(bbox[2]), int(bbox[3]))
                     cv2.rectangle(frame, p1, p2, bbox_color, 2, 1)
                     cv2.putText(frame, obj_cls_label + ': ' + str(score),
                                 p1, cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50, 170, 50), 2)
-            cv2.putText(frame, fid, (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 0), 2)
+            # cv2.putText(frame, fid, (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 0), 2)
             cv2.imshow('tracking', frame)
             cv2.waitKey(500)
 
 
 if __name__ == '__main__':
-    frames_path = 'framesCache/6980260459'
+    # extract_frames_path = 'framesCache/6980260459'
 
-    # test_vid_path = '/storage/dldi/PyProjects/vidor/img_test/6980260459.mp4'
-    # extract_frame_path = extract_all_frames(test_vid_path)
-    # print('---' * 20)
-    # print('extract frames finish!', extract_frame_path)
-    # anchor_frames_path = get_anchor_frames(extract_frame_path)
-    # print('===' * 20)
-    # print('get_anchor frames finish!', anchor_frames_path)
-    # anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
-    # print('--==' * 20)
-    # print('get_anchor_frames_det finish!', anchor_frames_det_path)
-    obj_tracking_list, anchor_names = track_frames(frames_path)
-    visualize_track(frames_path, obj_tracking_list, anchor_names)
+    test_vid_path = '/storage/dldi/PyProjects/vidor/img_test/6980260459.mp4'
+    extract_frame_path = extract_all_frames(test_vid_path)
+    print('---' * 20)
+    print('extract frames finish!', extract_frame_path)
+    anchor_frames_path = get_anchor_frames(extract_frame_path)
+    print('===' * 20)
+    print('get_anchor frames finish!', anchor_frames_path)
+    anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
+    print('--==' * 20)
+    print('get_anchor_frames_det finish!', anchor_frames_det_path)
+    obj_tracking_list, anchor_names = track_frames(extract_frame_path)
+    print('===' * 20)
+    print('track frames finish!')
+    # visualize_track(frames_path, obj_tracking_list, anchor_names)

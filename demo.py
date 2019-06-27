@@ -131,8 +131,8 @@ if __name__ == '__main__':
 
     args = parse_args()
 
-    print('Called with args:')
-    print(args)
+    # print('Called with args:')
+    # print(args)
 
     if args.cfg_file is not None:
         cfg_from_file(args.cfg_file)
@@ -141,8 +141,9 @@ if __name__ == '__main__':
 
     cfg.USE_GPU_NMS = args.cuda
 
-    print('Using config:')
-    pprint.pprint(cfg)
+    # print('Using config:')
+    # pprint.pprint(cfg)
+
     np.random.seed(cfg.RNG_SEED)
 
     # train set
@@ -180,7 +181,7 @@ if __name__ == '__main__':
 
     fasterRCNN.create_architecture()
 
-    print("load checkpoint %s" % load_name)
+    # print("load checkpoint %s" % load_name)
     if args.cuda > 0:
         checkpoint = torch.load(load_name)
     else:
@@ -189,11 +190,11 @@ if __name__ == '__main__':
     if 'pooling_mode' in checkpoint.keys():
         cfg.POOLING_MODE = checkpoint['pooling_mode']
 
-    print('load model successfully!')
+    # print('load model successfully!')
 
     # pdb.set_trace()
 
-    print("load checkpoint %s" % load_name)
+    # print("load checkpoint %s" % load_name)
 
     # initilize the tensor holder here.
     im_data = torch.FloatTensor(1)

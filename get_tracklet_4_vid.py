@@ -80,8 +80,8 @@ def get_anchor_dets(anchor_frames_path):
     re_detect = False
     for each_file in get_current_files_without_sub_files(anchor_frames_path):
         file_name = os.path.basename(each_file)
-        if file_name[-8:-4] != '_det':
-            if not os.path.isfile(file_name[:4] + '_det.json'):
+        if 'det' not in file_name:
+            if not os.path.isfile(os.path.join(anchor_frames_path, file_name[:4] + '_det.json')):
                 re_detect = True
     if not re_detect:
         print("Already detected!")

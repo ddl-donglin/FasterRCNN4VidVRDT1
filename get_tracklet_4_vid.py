@@ -50,14 +50,13 @@ def get_anchor_frames(frames_path, jump=10):
     else:
         print("The {} exists! Skip getting anchors!".format(anchor_frames_path))
         return anchor_frames_path
-    for root, dirs, files in os.walk(frames_path):
-        for each_frame in files:
-            frame_name = os.path.basename(each_frame)
-            if int(frame_name[:-4]) % jump == 0 or frame_name[:-4] == '0001':
-                try:
-                    shutil.copyfile(os.path.join(root, frame_name),
-                                    os.path.join(anchor_frames_path, frame_name))
-                except:
+    for each_frame in get_current_files_without_sub_files(frames_path):
+        frame_name = os.path.basename(each_frame)
+        if int(frame_name[:4]) % jump == 0 or frame_name[:4] == '0001':
+            try:
+                shutil.copyfile(os.path.join(frames_path, frame_name),
+                                os.path.join(anchor_frames_path, frame_name))
+            except:
                     pass
     return anchor_frames_path
 

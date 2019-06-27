@@ -49,6 +49,7 @@ def get_anchor_frames(frames_path, jump=5):
     if os.path.exists(anchor_frames_path):
         os.system('rm -rf ' + anchor_frames_path)
     os.makedirs(anchor_frames_path)
+    anchor_num = 0
     for each_frame in get_current_files_without_sub_files(frames_path):
         frame_name = os.path.basename(each_frame)
         if frame_name[:-4] == '.jpg':
@@ -56,9 +57,10 @@ def get_anchor_frames(frames_path, jump=5):
                 try:
                     shutil.copyfile(os.path.join(frames_path, frame_name),
                                     os.path.join(anchor_frames_path, frame_name))
+                    anchor_num += 1
                 except:
                     pass
-    return anchor_frames_path
+    return anchor_frames_path, anchor_num
 
 
 def get_anchor_dets(anchor_frames_path):
@@ -235,7 +237,7 @@ if __name__ == '__main__':
     # extract_frame_path = extract_all_frames(test_vid_path)
     print('---' * 20)
     print('extract frames finish!', extract_frame_path)
-    anchor_frames_path = get_anchor_frames(extract_frame_path)
+    anchor_frames_path, anchor_num = get_anchor_frames(extract_frame_path)
     print('===' * 20)
     print('get_anchor frames finish!', anchor_frames_path)
     anchor_frames_det_path = get_anchor_dets(anchor_frames_path)

@@ -5,6 +5,26 @@ from tqdm import tqdm
 from get_tracklet_4_vid import extract_all_frames, get_anchor_frames, \
     get_anchor_dets, track_frames, visualize_track, get_current_files_without_sub_files
 
+
+def main(video_path, anchor_jump, visualize=False):
+    print('=' * 50)
+    print('Now is getting video object tracking 4: ', video_path)
+    extract_frame_path = extract_all_frames(video_path)
+    print('---' * 10)
+    print('extract frames finish!', extract_frame_path)
+    anchor_frames_path = get_anchor_frames(extract_frame_path, anchor_jump)
+    print('===' * 10)
+    print('get_anchor frames finish!', anchor_frames_path)
+    anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
+    print('--=' * 10)
+    print('get_anchor_frames_det finish!', anchor_frames_det_path)
+    obj_tracking_list, anchor_names = track_frames(extract_frame_path)
+    print('-==' * 10)
+    print('track frames finish!')
+    if visualize:
+        visualize_track(extract_frame_path)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Stage 1 Video object tracklets')
 
@@ -28,35 +48,17 @@ if __name__ == '__main__':
 
     if args.vidor_support == 0:
         print('Video object tracking 4 single Video!')
-        print('Video path 2 get obj tracking: ', args.video_path)
-        extract_frame_path = extract_all_frames(args.video_path)
-        print('---' * 20)
-        print('extract frames finish!', extract_frame_path)
-        anchor_frames_path = get_anchor_frames(extract_frame_path, args.anchor_jump)
-        print('===' * 20)
-        print('get_anchor frames finish!', anchor_frames_path)
-        anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
-        print('--=' * 20)
-        print('get_anchor_frames_det finish!', anchor_frames_det_path)
-        obj_tracking_list, anchor_names = track_frames(extract_frame_path)
-        print('-==' * 20)
-        print('track frames finish!')
-        if args.visualize != 0:
-            visualize_track(extract_frame_path)
-
+        video_path = args.video_path
+        anchor_jump = args.anchor_jump
+        if args.visualize == 0:
+            visualize = False
+        else:
+            visualize = True
+        main(video_path, anchor_jump, visualize)
     else:
         print('Video Object Tracking 4 Vidor!')
         vid_dir_path = os.path.join(args.base_path, args.split_dir_path, args.video_dir)
         for vid in tqdm(get_current_files_without_sub_files(vid_dir_path)):
-            extract_frame_path = extract_all_frames(os.path.join(vid_dir_path, vid))
-            print('---' * 20)
-            print('extract frames finish!', extract_frame_path)
-            anchor_frames_path = get_anchor_frames(extract_frame_path, args.anchor_jump_4_vidor)
-            print('===' * 20)
-            print('get_anchor frames finish!', anchor_frames_path)
-            anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
-            print('--=' * 20)
-            print('get_anchor_frames_det finish!', anchor_frames_det_path)
-            obj_tracking_list, anchor_names = track_frames(extract_frame_path)
-            print('-==' * 20)
-            print('track frames finish!')
+            video_path = os.path.join(vid_dir_path, vid)
+            anchor_jump = args.anchor_jump_4_vidor
+            main(video_path, anchor_jump)

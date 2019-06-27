@@ -34,9 +34,12 @@ def extract_all_frames(video_path, out_path=None):
             print("The {} exists! Skip extracting frames!".format(extract_frame_path))
             return extract_frame_path
     else:
-        if not os.path.exists(out_path):
-            os.makedirs(out_path)
         extract_frame_path = out_path
+        if os.path.exists(out_path):
+            print("The {} exists! Skip extracting frames!".format(extract_frame_path))
+            return extract_frame_path
+        else:
+            os.makedirs(extract_frame_path)
 
     os.system(ffmpeg_path + ' -i ' + video_path + ' '
               + extract_frame_path + '/%4d.jpg'
@@ -74,8 +77,7 @@ def get_anchor_frames(frames_path, jump=30, get_mid_anchor=True):
 
 
 def get_anchor_dets(anchor_frames_path):
-    os.system('bash ' + project_base_path + 'gpu_demo.sh ' + anchor_frames_path
-              + ' > ' + os.path.join(anchor_frames_path, 'anchor_det.log 2>&1'))
+    os.system('bash ' + project_base_path + 'gpu_demo.sh ' + anchor_frames_path)
     return anchor_frames_path
 
 

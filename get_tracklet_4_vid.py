@@ -4,7 +4,6 @@ from __future__ import print_function
 
 import json
 import os
-from tqdm import tqdm
 
 import shutil
 import cv2
@@ -15,8 +14,6 @@ local_ffmpeg_path = '/home/daivd/PycharmProjects/ffmpeg-3.3.4/bin-linux/ffmpeg'
 local_project_base_path = '/home/daivd/PycharmProjects/FasterRCNN4VidVRDT1/'
 
 env = 'gpu'
-
-jump_frames = 5
 
 if env == 'gpu':
     project_base_path = gpu_project_base_path
@@ -45,7 +42,7 @@ def extract_all_frames(video_path, out_path=None):
     return extract_frame_path
 
 
-def get_anchor_frames(frames_path, jump=jump_frames):
+def get_anchor_frames(frames_path, jump=5):
     os.system('rm -rf ' + os.path.join(frames_path, 'tracking.json'))
     anchor_frames_path = os.path.join(frames_path, 'anchors')
     if not os.path.exists(anchor_frames_path):
@@ -169,15 +166,20 @@ def get_current_files_without_sub_files(path):
     return [name for name in os.listdir(path) if os.path.isfile(os.path.join(path, name))]
 
 
-def visualize_track(frames_path, obj_tracking_list, anchor_names=None):
+def visualize_track(frames_path, obj_tracking_list=None, anchor_names=None):
     bbox_color = (255, 0, 0)
+
+    if obj_tracking_list is None:
+        with open(os.path.join(frames_path, 'tracking.json'), 'r') as obj_tracking_f:
+            obj_tracking_list = json.load(obj_tracking_f)['obj_tracking']
+
     if anchor_names is None:
         anchor_names = set()
         for each_file in get_current_files_without_sub_files(os.path.join(frames_path, 'anchors')):
             anchor_names.add(each_file[:4])
-    anchor_names = list(anchor_names)
-
-    for i, anchor_id in enumerate(sorted(anchor_names)):
+    anchor_names = sorted(list(anchor_names))
+    # print(anchor_names)
+    for i, anchor_id in enumerate(anchor_names):
         if i + 1 == len(anchor_names):
             break
         next_anchor_id = anchor_names[i + 1]
@@ -200,7 +202,7 @@ def visualize_track(frames_path, obj_tracking_list, anchor_names=None):
                     cv2.putText(frame, obj_cls_label + ': ' + str(score),
                                 p1, cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50, 170, 50), 2)
             cv2.imshow('tracking', frame)
-            cv2.waitKey(500)
+            cv2.waitKey(300)
 
 
 if __name__ == '__main__':
@@ -219,4 +221,4 @@ if __name__ == '__main__':
     obj_tracking_list, anchor_names = track_frames(extract_frame_path)
     print('===' * 20)
     print('track frames finish!')
-    # visualize_track(extract_frame_path, obj_tracking_list, anchor_names)
+    # visualize_track(extract_frame_path)

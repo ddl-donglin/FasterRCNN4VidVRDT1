@@ -46,20 +46,18 @@ def extract_all_frames(video_path, out_path=None):
 def get_anchor_frames(frames_path, jump=5):
     # os.system('rm -rf ' + os.path.join(frames_path, 'tracking.json'))
     anchor_frames_path = os.path.join(frames_path, 'anchors')
-    if not os.path.exists(anchor_frames_path):
-        os.makedirs(anchor_frames_path)
-    else:
-        os.system('rm -rf ' + os.path.join(frames_path, 'anchors'))
+    if os.path.exists(anchor_frames_path):
+        os.system('rm -rf ' + anchor_frames_path)
+    os.makedirs(anchor_frames_path)
     for each_frame in get_current_files_without_sub_files(frames_path):
         frame_name = os.path.basename(each_frame)
-        if frame_name[:-4] != '.jpg':
-            break
-        if int(frame_name[:4]) % jump == 0 or frame_name[:4] == '0001':
-            try:
-                shutil.copyfile(os.path.join(frames_path, frame_name),
-                                os.path.join(anchor_frames_path, frame_name))
-            except:
-                pass
+        if frame_name[:-4] == '.jpg':
+            if int(frame_name[:4]) % jump == 0 or frame_name[:4] == '0001':
+                try:
+                    shutil.copyfile(os.path.join(frames_path, frame_name),
+                                    os.path.join(anchor_frames_path, frame_name))
+                except:
+                    pass
     return anchor_frames_path
 
 

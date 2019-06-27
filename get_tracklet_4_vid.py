@@ -34,9 +34,12 @@ def extract_all_frames(video_path, out_path=None):
             print("The {} exists! Skip extracting frames!".format(extract_frame_path))
             return extract_frame_path
     else:
-        if not os.path.exists(out_path):
-            os.makedirs(out_path)
         extract_frame_path = out_path
+        if os.path.exists(out_path):
+            print("The {} exists! Skip extracting frames!".format(extract_frame_path))
+            return extract_frame_path
+        else:
+            os.makedirs(extract_frame_path)
 
     os.system(ffmpeg_path + ' -i ' + video_path + ' '
               + extract_frame_path + '/%4d.jpg'
@@ -74,8 +77,16 @@ def get_anchor_frames(frames_path, jump=30, get_mid_anchor=True):
 
 
 def get_anchor_dets(anchor_frames_path):
-    os.system('bash ' + project_base_path + 'gpu_demo.sh ' + anchor_frames_path
-              + ' > ' + os.path.join(anchor_frames_path, 'anchor_det.log 2>&1'))
+    # re_detect = False
+    # for each_file in get_current_files_without_sub_files(anchor_frames_path):
+    #     file_name = os.path.basename(each_file)
+    #     if 'det' not in file_name:
+    #         if not os.path.isfile(os.path.join(anchor_frames_path, file_name[:4] + '_det.json')):
+    #             re_detect = True
+    # if not re_detect:
+    #     print("Already detected!")
+    #     return anchor_frames_path
+    os.system('bash ' + project_base_path + 'gpu_demo.sh ' + anchor_frames_path)
     return anchor_frames_path
 
 
@@ -114,10 +125,12 @@ def track_frames(frames_path, anchor_frames_path=None, video_id=None, retrack=Fa
         anchor_frames = list()
         if i + 2 < len(anchor_names):
             next_anchor_name = anchor_names[i + 2]
+
             for frame_idx in range(int(each_anchor), int(next_anchor_name)):
                 anchor_frames.append(cv2.imread(os.path.join(frames_path, str(frame_idx).zfill(4) + '.jpg')))
 
             anchor_frames = anchor_frames[::3]
+
             for each_class, bboxes in anchor_bboxes[i].items():
                 for each_bbox in bboxes:
                     score = each_bbox['score']
@@ -128,23 +141,32 @@ def track_frames(frames_path, anchor_frames_path=None, video_id=None, retrack=Fa
                         if i + 1 < len(tracking_bboxes):
                             pre_anchor = each_track_bbox
                             back_anchor = tracking_bboxes[i + 1]
+
                             dis_bbox = list()
                             for bi in range(4):
-                                dis_bbox[bi] = (back_anchor[bi] - pre_anchor[bi]) / 3
+                                dis_bbox.append((back_anchor[bi] - pre_anchor[bi]) / 3)
                             first_bbox = list()
                             second_bbox = list()
+                            # print(pre_anchor, back_anchor, dis_bbox)
                             for di in range(4):
-                                first_bbox[di] = pre_anchor[di] + dis_bbox[di]
-                                second_bbox[di] = back_anchor[di] - dis_bbox[di]
+                                first_bbox.append(pre_anchor[di] + dis_bbox[di])
+                                second_bbox.append(back_anchor[di] - dis_bbox[di])
                             tracklet_bboxes.append(pre_anchor)
-                            tracklet_bboxes.append(first_bbox)
-                            tracklet_bboxes.append(second_bbox)
+                            tracklet_bboxes.append(tuple(first_bbox))
+                            tracklet_bboxes.append(tuple(second_bbox))
+                        else:
+                            if i + 1 == len(tracking_bboxes):
+                                tracklet_bboxes.append(tracking_bboxes[i])
+                                tracklet_bboxes.append(tracklet_bboxes[-1])
+                                tracklet_bboxes.append(tracklet_bboxes[-1])
+
                     obj_tracking_list.append({
                         'obj_cls': each_class,
                         'start_frame': int(each_anchor),
                         'score': score,
                         'tracklet': tracklet_bboxes
                     })
+
     with open(tracking_json_path, 'w+') as out_f:
         out_f.write(json.dumps({
             'video_id': video_id,
@@ -254,20 +276,29 @@ def visualize_track(frames_path, obj_tracking_list=None, anchor_names=None):
     write_video(video, 30, tuple(size), os.path.join(frames_path, os.path.split(frames_path)[-1] + '.mp4'))
 
 
-if __name__ == '__main__':
-    extract_frame_path = 'framesCache/6980260459'
+def test_track_res(track_file):
+    with open(track_file, 'r') as in_f:
+        track_json = json.load(in_f)
+    print(len(track_json['obj_tracking']))
+    for each_track in track_json['obj_tracking']:
+        print(each_track['start_frame'], len(each_track['tracklet']))
 
-    # test_vid_path = '/storage/dldi/PyProjects/vidor/img_test/6980260459.mp4'
-    # extract_frame_path = extract_all_frames(test_vid_path)
-    print('---' * 20)
-    print('extract frames finish!', extract_frame_path)
-    anchor_frames_path, anchor_num = get_anchor_frames(extract_frame_path)
-    print('===' * 20)
-    print('get_anchor frames finish!', anchor_frames_path)
-    anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
-    print('--==' * 20)
-    print('get_anchor_frames_det finish!', anchor_frames_det_path)
-    obj_tracking_list, anchor_names = track_frames(extract_frame_path, retrack=True, save_frames=True)
+
+if __name__ == '__main__':
+    extract_frame_path = 'framesCache/0000/2401075277'
+
+    # print('---' * 20)
+    # print('extract frames finish!', extract_frame_path)
+    # anchor_frames_path, anchor_num = get_anchor_frames(extract_frame_path)
+    # print('===' * 20)
+    # print('get_anchor frames finish!', anchor_frames_path)
+    # anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
+    # print('--==' * 20)
+    # print('get_anchor_frames_det finish!', anchor_frames_det_path)
+
+    obj_tracking_list, anchor_names = track_frames(extract_frame_path, retrack=False, save_frames=True)
     print('===' * 20)
     print('track frames finish!')
-    visualize_track(extract_frame_path)
+    # visualize_track(extract_frame_path)
+
+    test_track_res(os.path.join(extract_frame_path, 'tracking.json'))

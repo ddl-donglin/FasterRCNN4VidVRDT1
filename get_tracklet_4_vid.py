@@ -7,6 +7,7 @@ import os
 
 import shutil
 import cv2
+from tqdm import tqdm
 
 gpu_project_base_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/'
 gpu_ffmpeg_path = '/storage/dldi/PyProjects/ffmpeg-3.3.4/bin-linux/ffmpeg'
@@ -95,7 +96,7 @@ def track_frames(frames_path, anchor_frames_path=None, video_id=None, retrack=Fa
 
     anchor_names = sorted(anchor_names)
     obj_tracking_list = list()
-    for i, each_anchor in enumerate(anchor_names):
+    for i, each_anchor in enumerate(tqdm(anchor_names)):
         anchor_frames = list()
         if i + 1 == len(anchor_names):
             break
@@ -206,10 +207,10 @@ def visualize_track(frames_path, obj_tracking_list=None, anchor_names=None):
 
 
 if __name__ == '__main__':
-    # extract_frame_path = 'framesCache/6980260459'
+    extract_frame_path = 'framesCache/6980260459'
 
-    test_vid_path = '/storage/dldi/PyProjects/vidor/img_test/6980260459.mp4'
-    extract_frame_path = extract_all_frames(test_vid_path)
+    # test_vid_path = '/storage/dldi/PyProjects/vidor/img_test/6980260459.mp4'
+    # extract_frame_path = extract_all_frames(test_vid_path)
     print('---' * 20)
     print('extract frames finish!', extract_frame_path)
     anchor_frames_path = get_anchor_frames(extract_frame_path)
@@ -218,7 +219,7 @@ if __name__ == '__main__':
     anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
     print('--==' * 20)
     print('get_anchor_frames_det finish!', anchor_frames_det_path)
-    obj_tracking_list, anchor_names = track_frames(extract_frame_path)
+    obj_tracking_list, anchor_names = track_frames(extract_frame_path, retrack=True)
     print('===' * 20)
     print('track frames finish!')
     # visualize_track(extract_frame_path)

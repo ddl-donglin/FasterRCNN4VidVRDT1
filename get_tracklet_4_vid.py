@@ -63,8 +63,10 @@ def get_anchor_frames(frames_path, jump=jump_frames):
     return anchor_frames_path
 
 
-def get_anchor_dets(anchor_frames_path):
-    os.system('bash ' + project_base_path + 'gpu_demo.sh ' + anchor_frames_path)
+def get_anchor_dets(anchor_frames_path, redetect=True):
+    if redetect:
+        os.system('rm -rf ' + anchor_frames_path + '/*')
+        os.system('bash ' + project_base_path + 'gpu_demo.sh ' + anchor_frames_path)
     return anchor_frames_path
 
 

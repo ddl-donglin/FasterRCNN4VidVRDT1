@@ -49,8 +49,7 @@ def get_anchor_frames(frames_path, jump=5):
     if not os.path.exists(anchor_frames_path):
         os.makedirs(anchor_frames_path)
     else:
-        print("The {} exists! Skip getting anchors!".format(anchor_frames_path))
-        return anchor_frames_path
+        os.system('rm -rf ' + os.path.join(frames_path, 'anchors'))
     for each_frame in get_current_files_without_sub_files(frames_path):
         frame_name = os.path.basename(each_frame)
         if frame_name[:-4] != '.jpg':

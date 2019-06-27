@@ -6,7 +6,7 @@ from get_tracklet_4_vid import extract_all_frames, get_anchor_frames, \
     get_anchor_dets, track_frames, visualize_track, get_current_files_without_sub_files
 
 
-def main(video_path, anchor_jump, visualize=False):
+def main(video_path, anchor_jump=5, visualize=False):
     print('=' * 50)
     print('Now is getting video object tracking 4: ', video_path)
     extract_frame_path = extract_all_frames(video_path)
@@ -18,7 +18,8 @@ def main(video_path, anchor_jump, visualize=False):
     anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
     print('--=' * 10)
     print('get_anchor_frames_det finish!', anchor_frames_det_path)
-    obj_tracking_list, anchor_names = track_frames(extract_frame_path)
+    # frames_path, anchor_frames_path = None, video_id = None, retrack = False, save_frames = False
+    obj_tracking_list, anchor_names = track_frames(extract_frame_path, )
     print('-==' * 10)
     print('track frames finish!')
     if visualize:

@@ -16,6 +16,8 @@ local_project_base_path = '/home/daivd/PycharmProjects/FasterRCNN4VidVRDT1/'
 
 env = 'gpu'
 
+jump_frames = 5
+
 if env == 'gpu':
     project_base_path = gpu_project_base_path
     ffmpeg_path = gpu_ffmpeg_path
@@ -43,7 +45,7 @@ def extract_all_frames(video_path, out_path=None):
     return extract_frame_path
 
 
-def get_anchor_frames(frames_path, jump=10):
+def get_anchor_frames(frames_path, jump=jump_frames):
     anchor_frames_path = os.path.join(frames_path, 'anchors')
     if not os.path.exists(anchor_frames_path):
         os.makedirs(anchor_frames_path)
@@ -57,7 +59,7 @@ def get_anchor_frames(frames_path, jump=10):
                 shutil.copyfile(os.path.join(frames_path, frame_name),
                                 os.path.join(anchor_frames_path, frame_name))
             except:
-                    pass
+                pass
     return anchor_frames_path
 
 
@@ -66,26 +68,27 @@ def get_anchor_dets(anchor_frames_path):
     return anchor_frames_path
 
 
-def track_frames(frames_path, anchor_frames_path=None, video_id=None):
+def track_frames(frames_path, anchor_frames_path=None, video_id=None, retrack=False):
     if video_id is None:
         video_id = os.path.split(frames_path)[-1]
 
     tracking_json_path = os.path.join(frames_path, 'tracking.json')
-    if os.path.exists(tracking_json_path):
-        with open(tracking_json_path, 'r') as in_f:
-            return json.load(in_f)['obj_tracking'], None
+    if not retrack:
+        if os.path.exists(tracking_json_path):
+            with open(tracking_json_path, 'r') as in_f:
+                return json.load(in_f)['obj_tracking'], None
 
     if anchor_frames_path is None:
         anchor_frames_path = os.path.join(frames_path, 'anchors')
     anchor_names = list()
     anchor_bboxes = list()
-    for each_anchor_file in get_current_files_without_sub_files(anchor_frames_path):
-            anchor_name = os.path.basename(each_anchor_file)
-            if anchor_name.endswith('_det.json'):
-                anchor_names.append(anchor_name[:4])
-                with open(os.path.join(anchor_frames_path, anchor_name), 'r') as in_f:
-                    anchor_bbox_json = json.load(in_f)
-                    anchor_bboxes.append(anchor_bbox_json)
+    for each_anchor_file in sorted(get_current_files_without_sub_files(anchor_frames_path)):
+        anchor_name = os.path.basename(each_anchor_file)
+        if anchor_name.endswith('_det.json'):
+            anchor_names.append(anchor_name[:4])
+            with open(os.path.join(anchor_frames_path, anchor_name), 'r') as in_f:
+                anchor_bbox_json = json.load(in_f)
+                anchor_bboxes.append(anchor_bbox_json)
 
     frames_num = 0
     for each_frame_file in get_current_files_without_sub_files(frames_path):
@@ -96,15 +99,15 @@ def track_frames(frames_path, anchor_frames_path=None, video_id=None):
     obj_tracking_list = list()
     for i, each_anchor in enumerate(anchor_names):
         anchor_frames = list()
-        if i < len(anchor_names) - 1:
-            for frame_idx in range(int(anchor_names[i]), int(anchor_names[i + 1])):
-                anchor_frames.append(cv2.imread(os.path.join(frames_path, str(frame_idx).zfill(4) + '.jpg')))
-        else:
-            for frame_idx in range(int(anchor_names[i]), frames_num + 1):
-                anchor_frames.append(cv2.imread(os.path.join(frames_path, str(frame_idx).zfill(4) + '.jpg')))
+        if i + 1 == len(anchor_names):
+            break
+        next_anchor_name = anchor_names[i + 1]
+        for frame_idx in range(int(each_anchor), int(next_anchor_name)):
+            anchor_frames.append(cv2.imread(os.path.join(frames_path, str(frame_idx).zfill(4) + '.jpg')))
 
+        # print(i, anchor_bboxes[i])
         for each_class, bboxes in anchor_bboxes[i].items():
-            # print('Now is tracking: ', each_class)
+            # print('Now is tracking: ', each_anchor, each_class)
             for each_bbox in bboxes:
                 score = each_bbox['score']
                 bbox = each_bbox['bbox']
@@ -115,7 +118,6 @@ def track_frames(frames_path, anchor_frames_path=None, video_id=None):
                     'score': score,
                     'tracklet': tracking_bboxes
                 })
-
     with open(tracking_json_path, 'w+') as out_f:
         out_f.write(json.dumps({
             'video_id': video_id,
@@ -185,7 +187,6 @@ def visualize_track(frames_path, obj_tracking_list, anchor_names=None):
                 segment_obj_tracks.append(each_obj_track)
 
         for j, fid in enumerate(range(int(anchor_id), int(next_anchor_id))):
-            print("Now is painting: ", fid)
             frame = cv2.imread(os.path.join(frames_path, str(fid).zfill(4) + '.jpg'))
             for each_obj_track in segment_obj_tracks:
                 if j < len(each_obj_track['tracklet']):
@@ -197,13 +198,12 @@ def visualize_track(frames_path, obj_tracking_list, anchor_names=None):
                     cv2.rectangle(frame, p1, p2, bbox_color, 2, 1)
                     cv2.putText(frame, obj_cls_label + ': ' + str(score),
                                 p1, cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50, 170, 50), 2)
-            # cv2.putText(frame, fid, (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 0), 2)
             cv2.imshow('tracking', frame)
             cv2.waitKey(500)
 
 
 if __name__ == '__main__':
-    # extract_frames_path = 'framesCache/6980260459'
+    # extract_frame_path = 'framesCache/6980260459'
 
     test_vid_path = '/storage/dldi/PyProjects/vidor/img_test/6980260459.mp4'
     extract_frame_path = extract_all_frames(test_vid_path)
@@ -215,7 +215,7 @@ if __name__ == '__main__':
     anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
     print('--==' * 20)
     print('get_anchor_frames_det finish!', anchor_frames_det_path)
-    obj_tracking_list, anchor_names = track_frames(extract_frame_path)
+    obj_tracking_list, anchor_names = track_frames(extract_frame_path, retrack=True)
     print('===' * 20)
     print('track frames finish!')
-    # visualize_track(frames_path, obj_tracking_list, anchor_names)
+    # visualize_track(extract_frame_path, obj_tracking_list, anchor_names)

@@ -58,10 +58,12 @@ if __name__ == '__main__':
     else:
         print('Video Object Tracking 4 Vidor!')
         gpu_project_base_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/'
+        local_project_base_path = '/home/daivd/PycharmProjects/FasterRCNN4VidVRDT1/'
+        project_base_path = gpu_project_base_path
+
         vid_dir_path = os.path.join(args.base_path, args.split_dir_path, args.video_dir)
         for vid in tqdm(get_current_files_without_sub_files(vid_dir_path)):
             video_path = os.path.join(vid_dir_path, vid)
             anchor_jump = args.anchor_jump_4_vidor
-            out_frames_path = os.path.join(vid_dir_path, vid[:-4])
-            out_frames_path = os.path.join(gpu_project_base_path, 'framesCache', out_frames_path)
+            out_frames_path = os.path.join(project_base_path, 'framesCache', args.video_dir, vid[:-4])
             main(video_path, anchor_jump, out_frames_path=out_frames_path)

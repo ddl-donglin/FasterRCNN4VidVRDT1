@@ -69,7 +69,7 @@ def get_anchor_dets(anchor_frames_path):
     return anchor_frames_path
 
 
-def track_frames(frames_path, anchor_frames_path=None, video_id=None, retrack=False):
+def track_frames(frames_path, anchor_frames_path=None, video_id=None, retrack=False, save_frames=False):
     if video_id is None:
         video_id = os.path.split(frames_path)[-1]
 
@@ -126,6 +126,10 @@ def track_frames(frames_path, anchor_frames_path=None, video_id=None, retrack=Fa
             'video_id': video_id,
             'obj_tracking': obj_tracking_list
         }))
+
+    if not save_frames:
+        os.system('rm -rf ' + frames_path + '/*.jpg')
+
     return obj_tracking_list, anchor_names
 
 

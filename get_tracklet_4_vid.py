@@ -77,6 +77,14 @@ def get_anchor_frames(frames_path, jump=30, get_mid_anchor=True):
 
 
 def get_anchor_dets(anchor_frames_path):
+    det_json_num = 0
+    all_files = get_current_files_without_sub_files(anchor_frames_path)
+    for each_file in all_files:
+        if os.path.basename(each_file)[-4:] == '.json':
+            det_json_num += 1
+    if det_json_num == len(all_files) / 3:
+        print("Already detected!", det_json_num)
+        return anchor_frames_path
     os.system('bash ' + project_base_path + 'gpu_demo.sh ' + anchor_frames_path)
     return anchor_frames_path
 
@@ -132,7 +140,7 @@ def track_frames(frames_path, anchor_frames_path=None, video_id=None, retrack=Fa
                             back_anchor = tracking_bboxes[i + 1]
                             dis_bbox = list()
                             for bi in range(4):
-                                dis_bbox[bi] = (back_anchor[bi] - pre_anchor[bi]) / 3
+                                dis_bbox.append((back_anchor[bi] - pre_anchor[bi]) / 3)
                             first_bbox = list()
                             second_bbox = list()
                             for di in range(4):

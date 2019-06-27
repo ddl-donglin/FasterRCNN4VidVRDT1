@@ -22,7 +22,7 @@ if __name__ == '__main__':
     vidor_support.add_argument('-bp', dest='base_path', help='base path of vidor', required=True, type=str)
     vidor_support.add_argument('-sp', dest='split_dir_path', help='split_dir_path of videos', required=True, type=str)
     vidor_support.add_argument('-vd', dest='video_dir', help='dir path of videos', required=True, type=str)
-    vidor_support.add_argument('-aj', dest='anchor_jump',
+    vidor_support.add_argument('-ajp', dest='anchor_jump_4_vidor',
                                help='frames num of anchor jump', default=5, type=int, required=False)
     args = parser.parse_args()
 
@@ -49,6 +49,6 @@ if __name__ == '__main__':
         vid_dir_path = os.path.join(args.base_path, args.split_dir_path, args.video_dir)
         for vid in tqdm(get_current_files_without_sub_files(vid_dir_path)):
             extract_frame_path = extract_all_frames(os.path.join(vid_dir_path, vid))
-            anchor_frames_path = get_anchor_frames(extract_frame_path, args.anchor_jump)
+            anchor_frames_path = get_anchor_frames(extract_frame_path, args.anchor_jump_4_vidor)
             anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
             obj_tracking_list, anchor_names = track_frames(extract_frame_path)

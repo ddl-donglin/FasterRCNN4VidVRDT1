@@ -46,6 +46,7 @@ def extract_all_frames(video_path, out_path=None):
 
 
 def get_anchor_frames(frames_path, jump=jump_frames):
+    os.system('rm -rf ' + os.path.join(frames_path, 'tracking.json'))
     anchor_frames_path = os.path.join(frames_path, 'anchors')
     if not os.path.exists(anchor_frames_path):
         os.makedirs(anchor_frames_path)
@@ -63,10 +64,8 @@ def get_anchor_frames(frames_path, jump=jump_frames):
     return anchor_frames_path
 
 
-def get_anchor_dets(anchor_frames_path, redetect=True):
-    if redetect:
-        os.system('rm -rf ' + anchor_frames_path + '/*')
-        os.system('bash ' + project_base_path + 'gpu_demo.sh ' + anchor_frames_path)
+def get_anchor_dets(anchor_frames_path):
+    os.system('bash ' + project_base_path + 'gpu_demo.sh ' + anchor_frames_path)
     return anchor_frames_path
 
 
@@ -217,7 +216,7 @@ if __name__ == '__main__':
     anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
     print('--==' * 20)
     print('get_anchor_frames_det finish!', anchor_frames_det_path)
-    obj_tracking_list, anchor_names = track_frames(extract_frame_path, retrack=True)
+    obj_tracking_list, anchor_names = track_frames(extract_frame_path)
     print('===' * 20)
     print('track frames finish!')
     # visualize_track(extract_frame_path, obj_tracking_list, anchor_names)

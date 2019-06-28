@@ -56,7 +56,7 @@ if __name__ == '__main__':
             visualize = True
         main(video_path, anchor_jump, visualize)
     else:
-        print('Video Object Tracking 4 Vidor!')
+        # print('Video Object Tracking 4 Vidor!')
         gpu_project_base_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/'
         local_project_base_path = '/home/daivd/PycharmProjects/FasterRCNN4VidVRDT1/'
         project_base_path = gpu_project_base_path
@@ -68,3 +68,5 @@ if __name__ == '__main__':
                 anchor_jump = args.anchor_jump_4_vidor
                 out_frames_path = os.path.join(project_base_path, 'framesCache', args.video_dir, vid[:-4])
                 main(video_path, anchor_jump, out_frames_path=out_frames_path)
+        else:
+            print(vid_dir_path, 'not exists!')

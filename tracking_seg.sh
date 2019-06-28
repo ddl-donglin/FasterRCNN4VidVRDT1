@@ -6,5 +6,6 @@ end=$3
 
 for (( i=${start}; i<=${end}; i++ ))
 do
-    bash stage1_4_vidor.sh ${prefix}${i}|awk '{printf("%04d\n",$0)}'
+    dir=$(echo ${prefix}${i}|awk '{printf("%04d\n",$0)}')
+    bash stage1_4_vidor.sh dir
 done

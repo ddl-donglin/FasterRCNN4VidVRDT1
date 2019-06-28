@@ -229,7 +229,7 @@ def get_current_files_without_sub_files(path):
     return [name for name in os.listdir(path) if os.path.isfile(os.path.join(path, name))]
 
 
-def visualize_track(frames_path, obj_tracking_list=None, anchor_names=None):
+def visualize_track(frames_path, obj_tracking_list=None, anchor_names=None, out_video_path=None, show=False):
     bbox_color = (255, 0, 0)
     size = [0, 0]
     if obj_tracking_list is None:
@@ -238,8 +238,13 @@ def visualize_track(frames_path, obj_tracking_list=None, anchor_names=None):
 
     if anchor_names is None:
         anchor_names = set()
-        for each_file in get_current_files_without_sub_files(os.path.join(frames_path, 'anchors')):
-            anchor_names.add(each_file[:4])
+        anchors_dir = os.path.join(frames_path, 'anchors')
+        if os.path.exists(anchors_dir):
+            for each_file in get_current_files_without_sub_files(anchors_dir):
+                anchor_names.add(each_file[:4])
+        else:
+            for each_track in obj_tracking_list:
+                anchor_names.add(each_track['start_frame'])
     anchor_names = sorted(list(anchor_names))
 
     video = list()
@@ -269,11 +274,32 @@ def visualize_track(frames_path, obj_tracking_list=None, anchor_names=None):
                         cv2.rectangle(frame, p1, p2, bbox_color, 2, 1)
                         cv2.putText(frame, obj_cls_label + ': ' + str(score),
                                     p1, cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50, 170, 50), 2)
-                cv2.imshow('tracking', frame)
+                if show:
+                    cv2.imshow('tracking', frame)
+                    cv2.waitKey(100)
                 video.append(frame)
-                cv2.waitKey(100)
 
-    write_video(video, 30, tuple(size), os.path.join(frames_path, os.path.split(frames_path)[-1] + '.mp4'))
+    if out_video_path is None:
+        out_video_path = os.path.join(frames_path, os.path.split(frames_path)[-1] + '.mp4')
+    write_video(video, 30, tuple(size), out_video_path)
+
+
+def visualize_track_4_file(track_file, video_path, out_video_path=None):
+    if os.path.isfile(video_path):
+        video_base_path, video_name = os.path.split(video_path)
+        if out_video_path is None:
+            out_video_path = os.path.join(video_base_path, video_name[:-4] + '_vis.mp4')
+        out_frames_cache_path = extract_all_frames(video_path,
+                                                   os.path.join(video_base_path, 'vis_frames_caches'))
+
+        with open(track_file, 'r') as tk_f:
+            track_json = json.load(tk_f)
+
+        visualize_track(out_frames_cache_path, track_json['obj_tracking'], out_video_path=out_video_path)
+
+        os.system('rm -rf ' + out_frames_cache_path)
+    else:
+        print(video_path, ' not exists!')
 
 
 def test_track_res(track_file):
@@ -285,7 +311,7 @@ def test_track_res(track_file):
 
 
 if __name__ == '__main__':
-    extract_frame_path = 'framesCache/0000/2401075277'
+    # extract_frame_path = 'framesCache/0000/2401075277'
 
     # print('---' * 20)
     # print('extract frames finish!', extract_frame_path)
@@ -296,9 +322,11 @@ if __name__ == '__main__':
     # print('--==' * 20)
     # print('get_anchor_frames_det finish!', anchor_frames_det_path)
 
-    obj_tracking_list, anchor_names = track_frames(extract_frame_path, retrack=False, save_frames=True)
-    print('===' * 20)
-    print('track frames finish!')
+    # obj_tracking_list, anchor_names = track_frames(extract_frame_path, retrack=False, save_frames=True)
+    # print('===' * 20)
+    # print('track frames finish!')
     # visualize_track(extract_frame_path)
 
-    test_track_res(os.path.join(extract_frame_path, 'tracking.json'))
+    # test_track_res(os.path.join(extract_frame_path, 'tracking.json'))
+
+    visualize_track_4_file('/home/daivd/Desktop/tracking.json', '/home/daivd/Desktop/2793806282.mp4')

@@ -7,5 +7,5 @@ end=$3
 for (( i=${start}; i<=${end}; i++ ))
 do
     dir=$(echo ${prefix}${i}|awk '{printf("%04d\n",$0)}')
-    bash stage1_4_vidor.sh dir
+    bash stage1_4_vidor.sh ${dir}
 done

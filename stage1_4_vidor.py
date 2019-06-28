@@ -62,8 +62,9 @@ if __name__ == '__main__':
         project_base_path = gpu_project_base_path
 
         vid_dir_path = os.path.join(args.base_path, args.split_dir_path, args.video_dir)
-        for vid in tqdm(get_current_files_without_sub_files(vid_dir_path)):
-            video_path = os.path.join(vid_dir_path, vid)
-            anchor_jump = args.anchor_jump_4_vidor
-            out_frames_path = os.path.join(project_base_path, 'framesCache', args.video_dir, vid[:-4])
-            main(video_path, anchor_jump, out_frames_path=out_frames_path)
+        if os.path.exists(vid_dir_path):
+            for vid in tqdm(get_current_files_without_sub_files(vid_dir_path)):
+                video_path = os.path.join(vid_dir_path, vid)
+                anchor_jump = args.anchor_jump_4_vidor
+                out_frames_path = os.path.join(project_base_path, 'framesCache', args.video_dir, vid[:-4])
+                main(video_path, anchor_jump, out_frames_path=out_frames_path)

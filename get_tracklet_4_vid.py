@@ -179,6 +179,22 @@ def track_frames(frames_path, anchor_frames_path=None, video_id=None, retrack=Fa
     return obj_tracking_list, anchor_names
 
 
+def estimate_det_json(det_json_path):
+    try:
+        with open(det_json_path, 'r') as in_f:
+            det_json = json.load(in_f)
+        flag = 0, True
+        if 'obj_tracking' not in det_json.keys():
+            flag = 1, False
+        if flag[1] and len(det_json['obj_tracking']) == 0:
+            flag = 2, False
+        if flag[1] and 'tracklet' not in det_json['obj_tracking'][0].keys():
+            flag = 3, False
+        return flag
+    except:
+        return 0, False
+
+
 def tracker(frames, init_bbox, tracker_type='KCF'):
     tracker_types = ['BOOSTING', 'MIL', 'KCF', 'TLD', 'MEDIANFLOW', 'GOTURN', 'MOSSE', 'CSRT']
     if tracker_type not in tracker_types:
@@ -311,22 +327,23 @@ def test_track_res(track_file):
 
 
 if __name__ == '__main__':
-    # extract_frame_path = 'framesCache/0000/2401075277'
+    extract_frame_path = 'framesCache/0000/2401075277'
 
-    # print('---' * 20)
-    # print('extract frames finish!', extract_frame_path)
-    # anchor_frames_path, anchor_num = get_anchor_frames(extract_frame_path)
-    # print('===' * 20)
-    # print('get_anchor frames finish!', anchor_frames_path)
-    # anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
-    # print('--==' * 20)
-    # print('get_anchor_frames_det finish!', anchor_frames_det_path)
+    print('---' * 20)
+    print('extract frames finish!', extract_frame_path)
+    anchor_frames_path, anchor_num = get_anchor_frames(extract_frame_path)
+    print('===' * 20)
+    print('get_anchor frames finish!', anchor_frames_path)
+    anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
+    print('--==' * 20)
+    print('get_anchor_frames_det finish!', anchor_frames_det_path)
 
-    # obj_tracking_list, anchor_names = track_frames(extract_frame_path, retrack=False, save_frames=True)
-    # print('===' * 20)
-    # print('track frames finish!')
-    # visualize_track(extract_frame_path)
+    obj_tracking_list, anchor_names = track_frames(extract_frame_path, retrack=False, save_frames=True)
+    print('===' * 20)
+    print('track frames finish!')
+    visualize_track(extract_frame_path)
 
-    # test_track_res(os.path.join(extract_frame_path, 'tracking.json'))
+    test_track_res(os.path.join(extract_frame_path, 'tracking.json'))
 
     visualize_track_4_file('/home/daivd/Desktop/tracking.json', '/home/daivd/Desktop/2793806282.mp4')
+

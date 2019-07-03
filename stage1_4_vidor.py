@@ -1,25 +1,39 @@
 import argparse
 import os
 from tqdm import tqdm
+import shutil
 
-from get_tracklet_4_vid import extract_all_frames, get_anchor_frames, \
+from get_tracklet_4_vid import extract_all_frames, get_anchor_frames, estimate_det_json, \
     get_anchor_dets, track_frames, visualize_track, get_current_files_without_sub_files
 
 
 def main(video_path, anchor_jump, visualize=False, out_frames_path=None):
+    # estimate the json
+    # detect_json = os.path.join(out_frames_path, 'tracking.json')
+    # if out_frames_path is not None:
+    #     if os.path.exists(detect_json):
+    #         id, flag = estimate_det_json(detect_json)
+    #         if not flag:
+    #             print('The estimating result of {} is --- {}, now delete it!'.format(detect_json, id))
+    #             print('Deleting: ', detect_json)
+    #             os.remove(detect_json)
+    #             shutil.rmtree(out_frames_path)
+    #         else:
+    #             return True
     print('=' * 50)
     print('Now is getting video object tracking 4: ', video_path)
     extract_frame_path = extract_all_frames(video_path, out_path=out_frames_path)
-    print('---' * 10)
+    print('111 >>>>>>>>>>>>>>>>')
     print('extract frames finish!', extract_frame_path)
     anchor_frames_path, anchor_num = get_anchor_frames(extract_frame_path, anchor_jump)
-    print('===' * 10)
+    print('222 >>>>>>>>>>>>>>>>')
     print('get_anchor frames finish!', anchor_num, anchor_frames_path)
     anchor_frames_det_path = get_anchor_dets(anchor_frames_path)
-    print('--=' * 10)
+    print('333 >>>>>>>>>>>>>>>>')
     print('get_anchor_frames_det finish!', anchor_frames_det_path)
     obj_tracking_list, anchor_names = track_frames(extract_frame_path)
-    print('-==' * 10)
+    print()
+    print('444 >>>>>>>>>>>>>>>>')
     print('track frames finish!')
     if visualize:
         visualize_track(extract_frame_path)
@@ -59,6 +73,7 @@ if __name__ == '__main__':
         # print('Video Object Tracking 4 Vidor!')
         gpu_project_base_path = '/storage/dldi/PyProjects/FasterRCNN4VidVRDT1/'
         local_project_base_path = '/home/daivd/PycharmProjects/FasterRCNN4VidVRDT1/'
+        mac_local_project_base_path = '/Users/davidddl/PycharmProjects/FasterRCNN4VidVRDT1/'
         project_base_path = gpu_project_base_path
 
         vid_dir_path = os.path.join(args.base_path, args.split_dir_path, args.video_dir)

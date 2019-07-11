@@ -291,10 +291,10 @@ if __name__ == '__main__':
             'cls_prob': cls_prob.data,
             'bbox_pred': bbox_pred.data,
             'rpn_loss_cls': rpn_loss_cls,
-            'rpn_loss_box': rpn_loss_box.data,
+            'rpn_loss_box': rpn_loss_box,
             'RCNN_loss_cls': RCNN_loss_cls,
-            'RCNN_loss_bbox': RCNN_loss_bbox.data,
-            'rois_label': rois_label.data
+            'RCNN_loss_bbox': RCNN_loss_bbox,
+            'rois_label': rois_label
         }
         with open('test_det_content.pkl', 'wb+') as out_f:
             out_f.write(pickle.dumps(test_content))

@@ -287,9 +287,9 @@ if __name__ == '__main__':
 
 
         test_content = {
-            'rois': rois.data.cpu().numpy(),
-            'cls_prob': cls_prob.data.cpu().numpy(),
-            'bbox_pred': bbox_pred.data.cpu().numpy(),
+            'rois': rois.data.cpu().numpy().tolist(),
+            'cls_prob': cls_prob.data.cpu().numpy().tolist(),
+            'bbox_pred': bbox_pred.data.cpu().numpy().tolist(),
             'rpn_loss_cls': rpn_loss_cls,
             'rpn_loss_box': rpn_loss_box,
             'RCNN_loss_cls': RCNN_loss_cls,

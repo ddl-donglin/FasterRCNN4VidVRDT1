@@ -306,7 +306,7 @@ if __name__ == '__main__':
         with open('test_det_content_rpn_loss_cls.pkl', 'wb+') as out_f:
             out_f.write(pickle.dumps(rpn_loss_cls))
         with open('test_det_content_rpn_loss_box.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(rpn_loss_box.cpu().numpy()))
+            out_f.write(pickle.dumps(rpn_loss_box))
         with open('test_det_content_RCNN_loss_cls.pkl', 'wb+') as out_f:
             out_f.write(pickle.dumps(RCNN_loss_cls))
         with open('test_det_content_RCNN_loss_bbox.pkl', 'wb+') as out_f:

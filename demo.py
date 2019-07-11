@@ -80,6 +80,8 @@ def parse_args():
                         action='store_true')
     parser.add_argument('--out_bbox', dest='out_bbox',
                         default=None, type=str)
+    parser.add_argument('--save_feature', dest='save_feature',
+                        default=None, type=str)
     parser.add_argument('--webcam_num', dest='webcam_num',
                         help='webcam ID number',
                         default=-1, type=int)
@@ -283,25 +285,7 @@ if __name__ == '__main__':
         rois, cls_prob, bbox_pred, \
         rpn_loss_cls, rpn_loss_box, \
         RCNN_loss_cls, RCNN_loss_bbox, \
-        rois_label = fasterRCNN(im_data, im_info, gt_boxes, num_boxes)
-
-
-        test_content = {
-            'rois': rois.data.cpu().numpy().tolist(),
-            'cls_prob': cls_prob.data.cpu().numpy().tolist(),
-            'bbox_pred': bbox_pred.data.cpu().numpy().tolist(),
-            'rpn_loss_cls': rpn_loss_cls,
-            'rpn_loss_box': rpn_loss_box,
-            'RCNN_loss_cls': RCNN_loss_cls,
-            'RCNN_loss_bbox': RCNN_loss_bbox,
-            'rois_label': rois_label
-        }
-
-        with open('test_det_content_rois_label.json', 'w+') as out_f:
-            out_f.write(json.dumps(test_content))
-
-        print('*' * 10, ' finish output det result! ', '*' * 10)
-        exit(1)
+        rois_label, pooled_feat = fasterRCNN(im_data, im_info, gt_boxes, num_boxes)
 
         scores = cls_prob.data
         boxes = rois.data[:, :, 1:5]
@@ -373,6 +357,10 @@ if __name__ == '__main__':
         if args.out_bbox is not None:
             with open(os.path.join(args.image_dir, imglist[num_images][:-4] + '_det.json'), 'w+') as out_f:
                 out_f.write(json.dumps(label_bboxes))
+
+        if args.save_feature is not None:
+            with open(os.path.join(args.image_dir, imglist[num_images][:-4] + 'cls_feat.pkl'), 'wb+') as out_f:
+                out_f.write(pickle.dumps(pooled_feat.cpu().numpy()))
 
         misc_toc = time.time()
         nms_time = misc_toc - misc_tic

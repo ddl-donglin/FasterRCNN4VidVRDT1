@@ -203,3 +203,5 @@ lib/model/utils/bbox.c
 lib/pycocotools/_mask.c
 
 framesCache/*
+
+*.pkl

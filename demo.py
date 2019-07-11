@@ -285,22 +285,36 @@ if __name__ == '__main__':
         RCNN_loss_cls, RCNN_loss_bbox, \
         rois_label = fasterRCNN(im_data, im_info, gt_boxes, num_boxes)
 
+        # test_content = {
+        #     'rois': rois.data,
+        #     'cls_prob': cls_prob.data,
+        #     'bbox_pred': bbox_pred.data,
+        #     'rpn_loss_cls': rpn_loss_cls,
+        #     'rpn_loss_box': rpn_loss_box,
+        #     'RCNN_loss_cls': RCNN_loss_cls,
+        #     'RCNN_loss_bbox': RCNN_loss_bbox,
+        #     'rois_label': rois_label
+        # }
 
-        test_content = {
-            'rois': rois.data,
-            'cls_prob': cls_prob.data,
-            'bbox_pred': bbox_pred.data,
-            'rpn_loss_cls': rpn_loss_cls,
-            'rpn_loss_box': rpn_loss_box,
-            'RCNN_loss_cls': RCNN_loss_cls,
-            'RCNN_loss_bbox': RCNN_loss_bbox,
-            'rois_label': rois_label
-        }
-        with open('test_det_content.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(test_content))
+        with open('test_det_content_rois.txt', 'w+') as out_f:
+            out_f.write(rois.data)
+        with open('test_det_content_cls_prob.txt', 'w+') as out_f:
+            out_f.write(cls_prob.data)
+        with open('test_det_content_bbox_pred.txt', 'w+') as out_f:
+            out_f.write(bbox_pred.data)
+        with open('test_det_content_rpn_loss_cls.txt', 'w+') as out_f:
+            out_f.write(rpn_loss_cls)
+        with open('test_det_content_rpn_loss_box.txt', 'w+') as out_f:
+            out_f.write(rpn_loss_box)
+        with open('test_det_content_RCNN_loss_cls.txt', 'w+') as out_f:
+            out_f.write(RCNN_loss_cls)
+        with open('test_det_content_RCNN_loss_bbox.txt', 'w+') as out_f:
+            out_f.write(RCNN_loss_bbox)
+        with open('test_det_content_rois_label.txt', 'w+') as out_f:
+            out_f.write(rois_label)
 
-        print('*'*10, ' finish output det result! ', '*'*10)
-        exit(0)
+        print('*' * 10, ' finish output det result! ', '*' * 10)
+        exit(1)
 
         scores = cls_prob.data
         boxes = rois.data[:, :, 1:5]

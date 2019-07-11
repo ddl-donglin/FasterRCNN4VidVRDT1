@@ -17,9 +17,9 @@ import torch
 #     det_content = pickle.load(in_f)
 # print(det_content)
 
-# with open('test_det_cont/test_det_content_rois.pkl', 'rb') as in_f:
-#     det_content = pickle.load(in_f)
-# print(det_content)
+with open('test_det_cont/test_det_content_rois.pkl', 'rb') as in_f:
+    det_content = pickle.load(in_f)
+print(det_content)
 #
 # with open('test_det_cont/test_det_content_rois_label.pkl', 'rb') as in_f:
 #     det_content = pickle.load(in_f)

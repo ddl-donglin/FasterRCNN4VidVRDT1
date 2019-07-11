@@ -290,9 +290,9 @@ if __name__ == '__main__':
             'rois': rois.data,
             'cls_prob': cls_prob.data,
             'bbox_pred': bbox_pred.data,
-            'rpn_loss_cls': rpn_loss_cls.data,
+            'rpn_loss_cls': rpn_loss_cls,
             'rpn_loss_box': rpn_loss_box.data,
-            'RCNN_loss_cls': RCNN_loss_cls.data,
+            'RCNN_loss_cls': RCNN_loss_cls,
             'RCNN_loss_bbox': RCNN_loss_bbox.data,
             'rois_label': rois_label.data
         }

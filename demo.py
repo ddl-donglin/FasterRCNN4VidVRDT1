@@ -296,22 +296,22 @@ if __name__ == '__main__':
         #     'rois_label': rois_label
         # }
 
-        with open('test_det_content_rois.txt', 'w+') as out_f:
-            out_f.write(rois.data)
-        with open('test_det_content_cls_prob.txt', 'w+') as out_f:
-            out_f.write(cls_prob.data)
-        with open('test_det_content_bbox_pred.txt', 'w+') as out_f:
-            out_f.write(bbox_pred.data)
-        with open('test_det_content_rpn_loss_cls.txt', 'w+') as out_f:
-            out_f.write(rpn_loss_cls)
-        with open('test_det_content_rpn_loss_box.txt', 'w+') as out_f:
-            out_f.write(rpn_loss_box)
-        with open('test_det_content_RCNN_loss_cls.txt', 'w+') as out_f:
-            out_f.write(RCNN_loss_cls)
-        with open('test_det_content_RCNN_loss_bbox.txt', 'w+') as out_f:
-            out_f.write(RCNN_loss_bbox)
-        with open('test_det_content_rois_label.txt', 'w+') as out_f:
-            out_f.write(rois_label)
+        with open('test_det_content_rois.pkl', 'wb+') as out_f:
+            out_f.write(pickle.dumps(rois.data))
+        with open('test_det_content_cls_prob.pkl', 'wb+') as out_f:
+            out_f.write(pickle.dumps(cls_prob.data))
+        with open('test_det_content_bbox_pred.pkl', 'wb+') as out_f:
+            out_f.write(pickle.dumps(bbox_pred.data))
+        with open('test_det_content_rpn_loss_cls.pkl', 'wb+') as out_f:
+            out_f.write(pickle.dumps(rpn_loss_cls))
+        with open('test_det_content_rpn_loss_box.pkl', 'wb+') as out_f:
+            out_f.write(pickle.dumps(rpn_loss_box))
+        with open('test_det_content_RCNN_loss_cls.pkl', 'wb+') as out_f:
+            out_f.write(pickle.dumps(RCNN_loss_cls))
+        with open('test_det_content_RCNN_loss_bbox.pkl', 'wb+') as out_f:
+            out_f.write(pickle.dumps(RCNN_loss_bbox))
+        with open('test_det_content_rois_label.pkl', 'wb+') as out_f:
+            out_f.write(pickle.dumps(rois_label))
 
         print('*' * 10, ' finish output det result! ', '*' * 10)
         exit(1)

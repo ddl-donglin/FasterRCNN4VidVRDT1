@@ -286,33 +286,19 @@ if __name__ == '__main__':
         rois_label = fasterRCNN(im_data, im_info, gt_boxes, num_boxes)
 
 
-        # test_content = {
-        #     'rois': rois.data,
-        #     'cls_prob': cls_prob.data,
-        #     'bbox_pred': bbox_pred.data,
-        #     'rpn_loss_cls': rpn_loss_cls,
-        #     'rpn_loss_box': rpn_loss_box,
-        #     'RCNN_loss_cls': RCNN_loss_cls,
-        #     'RCNN_loss_bbox': RCNN_loss_bbox,
-        #     'rois_label': rois_label
-        # }
+        test_content = {
+            'rois': rois.data.cpu().numpy(),
+            'cls_prob': cls_prob.data.cpu().numpy(),
+            'bbox_pred': bbox_pred.data.cpu().numpy(),
+            'rpn_loss_cls': rpn_loss_cls,
+            'rpn_loss_box': rpn_loss_box,
+            'RCNN_loss_cls': RCNN_loss_cls,
+            'RCNN_loss_bbox': RCNN_loss_bbox,
+            'rois_label': rois_label
+        }
 
-        with open('test_det_content_rois.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(rois.data.cpu().numpy()))
-        with open('test_det_content_cls_prob.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(cls_prob.data.cpu().numpy()))
-        with open('test_det_content_bbox_pred.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(bbox_pred.data.cpu().numpy()))
-        with open('test_det_content_rpn_loss_cls.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(rpn_loss_cls))
-        with open('test_det_content_rpn_loss_box.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(rpn_loss_box))
-        with open('test_det_content_RCNN_loss_cls.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(RCNN_loss_cls))
-        with open('test_det_content_RCNN_loss_bbox.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(RCNN_loss_bbox))
-        with open('test_det_content_rois_label.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(rois_label))
+        with open('test_det_content_rois_label.json', 'w+') as out_f:
+            out_f.write(json.dumps(test_content))
 
         print('*' * 10, ' finish output det result! ', '*' * 10)
         exit(1)

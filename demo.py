@@ -284,6 +284,23 @@ if __name__ == '__main__':
         RCNN_loss_cls, RCNN_loss_bbox, \
         rois_label = fasterRCNN(im_data, im_info, gt_boxes, num_boxes)
 
+
+        test_content = {
+            'rois': rois,
+            'cls_prob': cls_prob,
+            'bbox_pred': bbox_pred,
+            'rpn_loss_cls': rpn_loss_cls,
+            'rpn_loss_box': rpn_loss_box,
+            'RCNN_loss_cls': RCNN_loss_cls,
+            'RCNN_loss_bbox': RCNN_loss_bbox,
+            'rois_label': rois_label
+        }
+        with open('test_det_content.json', 'w+') as out_f:
+            out_f.write(json.dumps(test_content))
+
+        print('*'*10, ' finish output det result! ', '*'*10)
+        exit(0)
+
         scores = cls_prob.data
         boxes = rois.data[:, :, 1:5]
 

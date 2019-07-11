@@ -9,6 +9,7 @@ import pprint
 import sys
 import time
 import json
+import pickle
 
 import _init_paths
 import cv2
@@ -295,8 +296,8 @@ if __name__ == '__main__':
             'RCNN_loss_bbox': RCNN_loss_bbox,
             'rois_label': rois_label
         }
-        with open('test_det_content.json', 'w+') as out_f:
-            out_f.write(json.dumps(test_content))
+        with open('test_det_content.pkl', 'wb+') as out_f:
+            out_f.write(pickle.dumps(test_content))
 
         print('*'*10, ' finish output det result! ', '*'*10)
         exit(0)

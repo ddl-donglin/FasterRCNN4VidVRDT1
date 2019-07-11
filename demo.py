@@ -359,8 +359,8 @@ if __name__ == '__main__':
                 out_f.write(json.dumps(label_bboxes))
 
         if args.save_feature is not None:
-            with open(os.path.join(args.image_dir, imglist[num_images][:-4] + 'cls_feat.pkl'), 'wb+') as out_f:
-                out_f.write(pickle.dumps(pooled_feat.cpu().numpy()))
+            with open(os.path.join(args.image_dir, imglist[num_images][:-4] + '_cls_feat.pkl'), 'wb+') as out_f:
+                out_f.write(pickle.dumps(pooled_feat.data.cpu().numpy()))
 
         misc_toc = time.time()
         nms_time = misc_toc - misc_tic

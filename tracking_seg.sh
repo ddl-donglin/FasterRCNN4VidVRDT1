@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-prefix=$1
-start=$2
-end=$3
+start=$1
+end=$2
 
-for (( i=${start}; i<=${end}; i++ ))
+for i in $(seq ${start} ${end})
 do
-    dir=$(echo ${prefix}${i}|awk '{printf("%04d\n",$0)}')
+    dir=$(echo ${i}|awk '{printf("%04d\n",$0)}')
     bash stage1_4_vidor.sh ${dir}
 done
+
+# bash tracking_seg.sh 0000 0010

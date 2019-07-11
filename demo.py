@@ -310,9 +310,9 @@ if __name__ == '__main__':
         with open('test_det_content_RCNN_loss_cls.pkl', 'wb+') as out_f:
             out_f.write(pickle.dumps(RCNN_loss_cls))
         with open('test_det_content_RCNN_loss_bbox.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(RCNN_loss_bbox.cpu().numpy()))
+            out_f.write(pickle.dumps(RCNN_loss_bbox))
         with open('test_det_content_rois_label.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(rois_label.data.cpu().numpy()))
+            out_f.write(pickle.dumps(rois_label))
 
         print('*' * 10, ' finish output det result! ', '*' * 10)
         exit(1)

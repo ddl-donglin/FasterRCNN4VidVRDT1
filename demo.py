@@ -285,6 +285,7 @@ if __name__ == '__main__':
         RCNN_loss_cls, RCNN_loss_bbox, \
         rois_label = fasterRCNN(im_data, im_info, gt_boxes, num_boxes)
 
+
         # test_content = {
         #     'rois': rois.data,
         #     'cls_prob': cls_prob.data,
@@ -297,22 +298,22 @@ if __name__ == '__main__':
         # }
 
         with open('test_det_content_rois.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(rois.data))
-        with open('test_det_content_cls_prob.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(cls_prob.data))
-        with open('test_det_content_bbox_pred.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(bbox_pred.data))
-        with open('test_det_content_rpn_loss_cls.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(rpn_loss_cls))
-        with open('test_det_content_rpn_loss_box.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(rpn_loss_box))
-        with open('test_det_content_RCNN_loss_cls.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(RCNN_loss_cls))
-        with open('test_det_content_RCNN_loss_bbox.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(RCNN_loss_bbox))
-        with open('test_det_content_rois_label.pkl', 'wb+') as out_f:
-            out_f.write(pickle.dumps(rois_label))
-
+            out_f.write(pickle.dumps(rois.data.cpu().numpy()))
+        # with open('test_det_content_cls_prob.pkl', 'wb+') as out_f:
+        #     out_f.write(pickle.dumps(cls_prob.data))
+        # with open('test_det_content_bbox_pred.pkl', 'wb+') as out_f:
+        #     out_f.write(pickle.dumps(bbox_pred.data))
+        # with open('test_det_content_rpn_loss_cls.pkl', 'wb+') as out_f:
+        #     out_f.write(pickle.dumps(rpn_loss_cls))
+        # with open('test_det_content_rpn_loss_box.pkl', 'wb+') as out_f:
+        #     out_f.write(pickle.dumps(rpn_loss_box))
+        # with open('test_det_content_RCNN_loss_cls.pkl', 'wb+') as out_f:
+        #     out_f.write(pickle.dumps(RCNN_loss_cls))
+        # with open('test_det_content_RCNN_loss_bbox.pkl', 'wb+') as out_f:
+        #     out_f.write(pickle.dumps(RCNN_loss_bbox))
+        # with open('test_det_content_rois_label.pkl', 'wb+') as out_f:
+        #     out_f.write(pickle.dumps(rois_label))
+        #
         print('*' * 10, ' finish output det result! ', '*' * 10)
         exit(1)
 
